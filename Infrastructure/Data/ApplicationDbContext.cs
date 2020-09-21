@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-using App.Models;
+using Infrastructure.Models;
 
 using Core.Models;
 
@@ -14,7 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-namespace App.Data {
+namespace Infrastructure.Data {
     public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser> {
 
         public ApplicationDbContext(
@@ -22,10 +22,11 @@ namespace App.Data {
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions) {
         }
 
-
-        protected override void OnConfiguring(DbContextOptionsBuilder options) =>
-                options.UseLoggerFactory(loggerFactory);
-
         public static readonly ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+
+        public static void UseDefaultOptions(DbContextOptionsBuilder options) =>
+            options
+                .UseSqlite("DataSource=../app.db;Cache=Shared", b => b.MigrationsAssembly("Infrastructure"))
+                .UseLoggerFactory(loggerFactory);
     }
 }

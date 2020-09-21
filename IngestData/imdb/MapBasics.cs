@@ -1,6 +1,7 @@
+using System.Linq;
+
 using Core.Models.Title;
 
-using System.Linq;
 using Shared;
 
 namespace IngestData.imdb {

@@ -7,7 +7,7 @@ using Core.Interfaces;
 
 using Microsoft.AspNetCore.Identity;
 
-namespace App.Models {
+namespace Infrastructure.Models {
     public class ApplicationUser : IdentityUser, IUser {
     }
 }

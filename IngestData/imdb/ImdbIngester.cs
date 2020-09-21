@@ -1,8 +1,9 @@
 using System.Globalization;
 using System.IO;
 
-using Shared;
 using CsvHelper;
+
+using Shared;
 
 namespace IngestData.imdb {
     public class ImdbIngester {
