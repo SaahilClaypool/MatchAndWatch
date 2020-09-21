@@ -12,12 +12,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.0-preview.8.20414.8" />
     <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="5.0.0-preview.8.20414.8" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.0-preview.8.20414.8" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.0-preview.8.20414.8" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.0-preview.8.20414.8" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="5.0.0-preview.8.20407.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.0-preview.8.20407.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.0-preview.8.20407.4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,6 +25,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
