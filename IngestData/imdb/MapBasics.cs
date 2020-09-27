@@ -5,8 +5,8 @@ using Core.Models.Title;
 using Shared;
 
 namespace IngestData.imdb {
-    class MapBasics : AMapper<BasicsCSV, TitleAgg> {
-        public override TitleAgg Map(BasicsCSV from) {
+    class MapBasics : AMapper<BasicsRow, TitleAgg> {
+        public override TitleAgg Map(BasicsRow from) {
             var result = from.EndYear == "\\N";
             TitleAgg title = new() {
                 Id = from.Tconst,
@@ -25,18 +25,26 @@ namespace IngestData.imdb {
             return title;
         }
 
-        static int? ParseYear(string year) => (year.Equals("\\N") ? null : int.Parse(year));
+        static int? ParseYear(string year) {
+            try {
+                return year.Equals("\\N") ? null : int.Parse(year);
+            }
+            catch {
+                year.Dbg();
+                return null;
+            }
+        }
     }
 
-    public class BasicsCSV {
-        public string Tconst { get; set; } // id
-        public string TitleType { get; set; }
-        public string PrimaryTitle { get; set; }
-        public string OriginalTitle { get; set; }
-        public bool IsAdult { get; set; }
-        public string StartYear { get; set; }
-        public string EndYear { get; set; }
-        public string RuntimeMinutes { get; set; }
-        public string Genres { get; set; }
+    public class BasicsRow {
+            public string Tconst { get; set; } // id
+            public string TitleType { get; set; }
+            public string PrimaryTitle { get; set; }
+            public string OriginalTitle { get; set; }
+        public string IsAdult { get; set; }
+            public string StartYear { get; set; }
+            public string EndYear { get; set; }
+            public string RuntimeMinutes { get; set; }
+            public string Genres { get; set; }
+        }
     }
-}

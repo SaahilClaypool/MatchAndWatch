@@ -1,20 +1,40 @@
 ﻿using System;
 
+using Infrastructure;
+using System.Linq;
+
 using IngestData.imdb;
+using Microsoft.EntityFrameworkCore;
+using Infrastructure.Data;
 
 namespace IngestData {
     class Program {
         static void Main(string[] _args) {
             Console.WriteLine("Hello World!");
-            ImdbIngester ingester = new(new() {
+            ImdbTsvPaths paths = new() {
                 NameBasics = "./data/name.basics.tsv",
                 TitleBasics = "./data/title.basics.tsv",
                 TitleCrew = "./data/title.crew.tsv",
                 TitleEpisode = "./data/title.episodes.tsv",
                 TitlePrincipals = "./data/title.principals.tsv",
                 TitleRatings = "./data/title.ratings.tsv",
-            });
-            ingester.Ingest();
+            };
+
+            int num = 0;
+            ApplicationDbContext createContext() {
+                System.Console.WriteLine($"Creating context {num++}");
+                return new DbContextFactory().CreateDbContextWithOptions(new() { Log = true });
+            };
+
+            using (var context = createContext()) {
+                context.Database.ExecuteSqlRaw("DELETE FROM Genre; DELETE FROM TitleAggs;");
+            }
+
+            ImdbIngester ingester = new(paths) {
+                CreateContext = createContext
+            };
+            ingester.MaxRecords = 50000;
+            ingester.Ingest().Wait();
 
         }
     }
