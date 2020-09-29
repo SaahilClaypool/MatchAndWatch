@@ -23,7 +23,7 @@ namespace IngestData {
             int num = 0;
             ApplicationDbContext createContext() {
                 System.Console.WriteLine($"Creating context {num++}");
-                return new DbContextFactory().CreateDbContextWithOptions(new() { Log = true });
+                return new DbContextFactory().CreateDbContextWithOptions(new() { Log = false });
             };
 
             using (var context = createContext()) {
@@ -33,7 +33,7 @@ namespace IngestData {
             ImdbIngester ingester = new(paths) {
                 CreateContext = createContext
             };
-            ingester.MaxRecords = 50000;
+            ingester.MaxRecords = 500000;
             ingester.Ingest().Wait();
 
         }

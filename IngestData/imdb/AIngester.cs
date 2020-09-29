@@ -13,11 +13,11 @@ namespace IngestData.imdb {
         protected ApplicationDbContext _Context;
         protected ApplicationDbContext Context { get => _Context ??= CreateContext(); set => _Context = value; }
         public int MaxRecords { get; set; }
-        protected int BatchSize { get; set; } = 10000;
+        protected int BatchSize { get; set; } = 100000;
         abstract public Task Ingest();
         public Func<ApplicationDbContext> CreateContext { get; set; }
 
-        protected async Task IngestRecords<T>(IEnumerable<T> records, DbSet<T> DbSet) where T : class {
+        protected async Task IngestRecords<T>(IEnumerable<T> records, Func<ApplicationDbContext, DbSet<T>> DbSet) where T : class {
             List<T> pendingRecords = new();
             foreach (var record in records.Select((val, i) => new { Value = val, Index = i })) {
                 if (MaxRecords != 0 && record.Index > MaxRecords) {
@@ -27,9 +27,13 @@ namespace IngestData.imdb {
                 pendingRecords.Add(record.Value);
 
                 if (record.Index % BatchSize == 0) {
-                    await DbSet.AddRangeAsync(pendingRecords);
+                    await DbSet(Context).AddRangeAsync(pendingRecords);
+                    System.Console.WriteLine("Inserting");
                     await Context.SaveChangesAsync();
+                    System.Console.WriteLine("Done Inserting");
+                    await Context.DisposeAsync();
                     pendingRecords = new();
+                    Context = CreateContext();
                 }
             }
         }

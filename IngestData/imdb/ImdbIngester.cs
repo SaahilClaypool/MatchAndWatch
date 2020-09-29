@@ -42,7 +42,7 @@ namespace IngestData.imdb {
                 record => mapper.Map(record)
             );
 
-            await IngestRecords(dbRecords, Context.TitleAggs);
+            await IngestRecords(dbRecords, (context) => context.TitleAggs);
         }
     }
 
