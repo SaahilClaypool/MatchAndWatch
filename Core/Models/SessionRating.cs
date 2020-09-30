@@ -1,7 +1,7 @@
 using Core.Interfaces;
 
 namespace Core.Models {
-    public class Rating {
+    public class SessionRating {
         public Movie Movie { get; set; }
 
         /// TODO: figure out if we should

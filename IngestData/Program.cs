@@ -26,14 +26,10 @@ namespace IngestData {
                 return new DbContextFactory().CreateDbContextWithOptions(new() { Log = false });
             };
 
-            using (var context = createContext()) {
-                context.Database.ExecuteSqlRaw("DELETE FROM Genre; DELETE FROM TitleAggs;");
-            }
-
             ImdbIngester ingester = new(paths) {
                 CreateContext = createContext
             };
-            ingester.MaxRecords = 500000;
+            ingester.MaxRecords = 0;
             ingester.Ingest().Wait();
 
         }

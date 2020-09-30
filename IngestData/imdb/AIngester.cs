@@ -36,6 +36,19 @@ namespace IngestData.imdb {
                     Context = CreateContext();
                 }
             }
+            await DbSet(Context).AddRangeAsync(pendingRecords);
+            System.Console.WriteLine("Inserting");
+            await Context.SaveChangesAsync();
+        }
+        public async Task Clear(string table) {
+            using var context = CreateContext();
+            context.Database.ExecuteSqlRaw($"DELETE FROM {table};");
+            await context.SaveChangesAsync();
+        }
+
+        public Task<bool> IsEmpty<T>(Func<ApplicationDbContext, DbSet<T>> dbset) where T : class {
+            using var context = CreateContext();
+            return dbset(context).AnyAsync();
         }
     }
 

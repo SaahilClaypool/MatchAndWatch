@@ -8,6 +8,6 @@ namespace Core.Models {
         public IEnumerable<SessionUser> Participants { get; set; }
 
         public IEnumerable<Movie> Movies { get; set; }
-        public IEnumerable<Rating> Ratings { get; set; }
+        public IEnumerable<SessionRating> Ratings { get; set; }
     }
 }

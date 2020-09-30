@@ -14,11 +14,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Core.Models.Title;
+using Shared.Infrastructure.Data;
 
 namespace Infrastructure.Data {
     public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser> {
 
         public DbSet<TitleAgg> TitleAggs { get; set; }
+        public DbSet<Rating> Ratings { get; set; }
 
         public ApplicationDbContext(
             DbContextOptions options,
@@ -27,18 +29,7 @@ namespace Infrastructure.Data {
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<TitleAgg>()
-                .HasKey(title => title.Id);
-            modelBuilder.Entity<TitleAgg>()
-                .HasMany<Genre>()
-                .WithOne()
-                .HasForeignKey(genre => genre.TitleId)
-                .OnDelete(DeleteBehavior.Cascade);
-            modelBuilder.Entity<Genre>()
-                .HasOne<TitleAgg>()
-                .WithMany()
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasForeignKey(genre => genre.TitleId);
+            modelBuilder.ConfigureTitleAgg();
         }
 
         public static readonly ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());

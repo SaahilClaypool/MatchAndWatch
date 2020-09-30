@@ -3,14 +3,16 @@ using System;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200930000456_Ratings")]
+    partial class Ratings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,11 +44,14 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Core.Models.Title.Rating", b =>
                 {
-                    b.Property<string>("TitleId")
+                    b.Property<string>("Id")
                         .HasColumnType("TEXT");
 
                     b.Property<float>("AverageRating")
                         .HasColumnType("REAL");
+
+                    b.Property<string>("TitleId")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("TitleId1")
                         .HasColumnType("TEXT");
@@ -54,11 +59,14 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Votes")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("TitleId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("TitleId")
+                        .IsUnique();
 
                     b.HasIndex("TitleId1");
 
-                    b.ToTable("Ratings");
+                    b.ToTable("Rating");
                 });
 
             modelBuilder.Entity("Core.Models.Title.TitleAgg", b =>
@@ -377,8 +385,7 @@ namespace Infrastructure.Migrations
                     b.HasOne("Core.Models.Title.TitleAgg", null)
                         .WithOne()
                         .HasForeignKey("Core.Models.Title.Rating", "TitleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Core.Models.Title.TitleAgg", "Title")
                         .WithMany()
