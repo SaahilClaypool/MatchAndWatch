@@ -1,0 +1,1 @@
+https://developers.themoviedb.org/3/getting-started/daily-file-exports

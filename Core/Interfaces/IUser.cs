@@ -1,5 +1,5 @@
 namespace Core.Interfaces {
-    public interface IUser {
-        string Id { get; set; }
-    }
+  public interface IUser {
+    string Id { get; set; }
+  }
 }

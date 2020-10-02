@@ -1,4 +1,5 @@
 *.db*
+*.gz
 
 # Created by https://www.toptal.com/developers/gitignore/api/csharp,node
 # Edit at https://www.toptal.com/developers/gitignore?templates=csharp,node
