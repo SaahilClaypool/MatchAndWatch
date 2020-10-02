@@ -24,7 +24,7 @@ namespace IngestData.imdb {
     }
 
     public override async Task Ingest() {
-      // if (IsEmpty(context => context.TitleAggs).Result)
+      // if (IsEmpty(context => context.Titles).Result)
       await IngestBasics();
       // if (IsEmpty(context => context.Ratings).Result)
       await IngestRatings();
@@ -43,7 +43,7 @@ namespace IngestData.imdb {
 
     private async Task IngestBasics() {
       Clear("Genre").Wait();
-      Clear("TitleAggs").Wait();
+      Clear("Titles").Wait();
       var csv = Reader(Paths.TitleBasics);
       var mapper = new MapBasics();
       var dbRecords = csv.GetRecords<BasicsRow>()
@@ -51,25 +51,25 @@ namespace IngestData.imdb {
           record => mapper.Map(record)
       );
 
-      await IngestRecords(dbRecords, (context) => context.TitleAggs);
+      await IngestRecords(dbRecords, (context) => context.Titles);
     }
 
     private async Task IngestRatings() {
-      Clear("Ratings").Wait();
-      System.Console.WriteLine("Ingesting ratings");
-      var csv = Reader(Paths.TitleRatings);
-      var mapper = new MapRatings();
-      using var context = CreateContext();
-      var aggIds = new HashSet<string>(context.TitleAggs.Select(row => row.Id).AsEnumerable());
-      var dbRecords = csv.GetRecords<RatingsRow>()
-      .Where(
-          row => aggIds.Contains(row.Tconst)
-      )
-      .Select(
-          record => mapper.Map(record)
-      );
+      // Clear("Ratings").Wait();
+      // System.Console.WriteLine("Ingesting ratings");
+      // var csv = Reader(Paths.TitleRatings);
+      // var mapper = new MapRatings();
+      // using var context = CreateContext();
+      // var aggIds = new HashSet<string>(context.Titles.Select(row => row.Id).AsEnumerable());
+      // var dbRecords = csv.GetRecords<RatingsRow>()
+      // .Where(
+      //     row => aggIds.Contains(row.Tconst)
+      // )
+      // .Select(
+      //     record => mapper.Map(record)
+      // );
 
-      await IngestRecords(dbRecords, (context) => context.Ratings);
+      // await IngestRecords(dbRecords, (context) => context.Ratings);
     }
 
   }

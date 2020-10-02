@@ -20,8 +20,7 @@ using Shared.Infrastructure.Data;
 namespace Infrastructure.Data {
   public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser> {
 
-    public DbSet<TitleAgg> TitleAggs { get; set; }
-    public DbSet<Rating> Ratings { get; set; }
+    public DbSet<Title> Titles { get; set; }
 
     public ApplicationDbContext(
         DbContextOptions options,
@@ -30,7 +29,7 @@ namespace Infrastructure.Data {
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
       base.OnModelCreating(modelBuilder);
-      modelBuilder.ConfigureTitleAgg();
+      modelBuilder.ConfigureTitle();
     }
 
     public static readonly ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());

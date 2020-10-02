@@ -5,9 +5,9 @@ using Core.Models.Title;
 using Shared;
 
 namespace IngestData.imdb {
-  class MapBasics : AMapper<BasicsRow, TitleAgg> {
-    public override TitleAgg Map(BasicsRow from) {
-      TitleAgg title = new() {
+  class MapBasics : AMapper<BasicsRow, Title> {
+    public override Title Map(BasicsRow from) {
+      Title title = new() {
         Id = from.Tconst,
         Type = from.TitleType,
         Name = from.PrimaryTitle,
@@ -18,7 +18,7 @@ namespace IngestData.imdb {
 
       title.Genres = from.Genres.Split(";").Select(genre => new Genre() {
         GenreName = genre,
-        TitleAgg = title
+        Title = title
       }).ToList();
 
       return title;

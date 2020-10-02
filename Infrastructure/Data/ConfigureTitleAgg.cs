@@ -4,28 +4,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Shared {
   namespace Infrastructure.Data {
-    public static class ConfigureTitleAggExtensions {
-      public static ModelBuilder ConfigureTitleAgg(this ModelBuilder modelBuilder) {
-        modelBuilder.Entity<TitleAgg>()
+    public static class ConfigureTitleExtensions {
+      public static ModelBuilder ConfigureTitle(this ModelBuilder modelBuilder) {
+        modelBuilder.Entity<Title>()
             .HasKey(title => title.Id);
-        modelBuilder.Entity<TitleAgg>()
+        modelBuilder.Entity<Title>()
             .HasMany<Genre>()
             .WithOne()
             .HasForeignKey(genre => genre.TitleId)
             .OnDelete(DeleteBehavior.Cascade);
         modelBuilder.Entity<Genre>()
-            .HasOne<TitleAgg>()
+            .HasOne<Title>()
             .WithMany()
             .HasForeignKey(genre => genre.TitleId);
-
-        modelBuilder.Entity<TitleAgg>()
-            .HasOne<Rating>()
-            .WithOne()
-            .OnDelete(DeleteBehavior.Cascade)
-            .HasForeignKey<Rating>(rating => rating.TitleId);
-        modelBuilder.Entity<Rating>()
-            .HasKey(rating => rating.TitleId);
-
         return modelBuilder;
       }
 

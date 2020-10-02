@@ -28,7 +28,9 @@ namespace Shared {
       var fileName = CallStack.GetFileName();
       var lineNum = CallStack.GetFileLineNumber();
       var type = self.GetType();
-      Console.WriteLine($"\nDBG: {fileName}:{lineNum} : {type} - {self.ToJson(pretty)}\n");
+
+      string representation = self is string @string ? @string : self.ToJson(pretty);
+      Console.WriteLine($"\nDBG: {fileName}:{lineNum} : {type} - {representation}\n");
     }
   }
 }
