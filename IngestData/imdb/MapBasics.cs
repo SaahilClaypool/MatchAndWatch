@@ -17,7 +17,7 @@ namespace IngestData.imdb {
       };
 
       title.Genres = from.Genres.Split(";").Select(genre => new Genre() {
-        GenreName = genre,
+        Name = genre,
         Title = title
       }).ToList();
 

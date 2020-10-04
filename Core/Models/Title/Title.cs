@@ -8,7 +8,7 @@ namespace Core.Models.Title {
     public string Name { get; set; }
     public int? ReleaseYear { get; set; }
     public int? EndYear { get; set; }
-    public int RunTime { get; set; }
+    public int? RunTime { get; set; }
     public ICollection<Genre> Genres { get; set; }
     public float Popularity { get; set; }
     public float RatingAverage { get; set; }

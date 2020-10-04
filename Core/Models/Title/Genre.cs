@@ -3,6 +3,6 @@ namespace Core.Models.Title {
     public int Id { get; set; }
     public string TitleId { get; set; }
     public Title Title { get; set; }
-    public string GenreName { get; set; }
+    public string Name { get; set; }
   }
 }

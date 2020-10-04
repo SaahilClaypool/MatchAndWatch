@@ -36,11 +36,24 @@ namespace Tmdb.Api {
     [JsonPropertyName("original_title")]
     public string OriginalTitle { get; set; }
 
+    [JsonPropertyName("runtime")]
+    public int? RunTime { get; set; }
+
+    [JsonPropertyName("vote_average")]
+    public float VoteAverage { get; set; }
+
+    [JsonPropertyName("vote_count")]
+    public int VoteCount { get; set; }
+
     public Title ToTitle() {
       return new Title {
         Id = Id.ToString(),
         Genres = Genres.Select(genre => genre.ToGenre()).ToList(),
         Name = OriginalTitle,
+        RunTime = RunTime,
+        RatingAverage = VoteAverage,
+        RatingCount = VoteCount,
+        ImdbId = ImdbId,
       };
     }
   }
@@ -53,7 +66,9 @@ namespace Tmdb.Api {
     public string Name { get; set; }
 
     public Genre ToGenre() {
-      return new();
+      return new() {
+        Name = Name,
+      };
     }
   }
 }

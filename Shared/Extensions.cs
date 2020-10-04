@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -31,6 +33,10 @@ namespace Shared {
 
       string representation = self is string @string ? @string : self.ToJson(pretty);
       Console.WriteLine($"\nDBG: {fileName}:{lineNum} : {type} - {representation}\n");
+    }
+
+    public static IEnumerable<(T item, int index)> WithIndex<T>(this IEnumerable<T> source) {
+      return source.Select((item, index) => (item, index));
     }
   }
 }

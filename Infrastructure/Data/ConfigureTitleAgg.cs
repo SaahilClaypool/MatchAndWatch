@@ -9,14 +9,11 @@ namespace Shared {
         modelBuilder.Entity<Title>()
             .HasKey(title => title.Id);
         modelBuilder.Entity<Title>()
-            .HasMany<Genre>()
-            .WithOne()
+            .HasMany(title => title.Genres)
+            .WithOne(genre => genre.Title)
             .HasForeignKey(genre => genre.TitleId)
-            .OnDelete(DeleteBehavior.Cascade);
-        modelBuilder.Entity<Genre>()
-            .HasOne<Title>()
-            .WithMany()
-            .HasForeignKey(genre => genre.TitleId);
+            .OnDelete(DeleteBehavior.Cascade)
+            .IsRequired();
         return modelBuilder;
       }
 
