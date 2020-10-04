@@ -23,14 +23,13 @@ namespace Tmdb.Api {
       var url = ConstructUrl(path);
       try {
         string responseBody = await client.GetStringAsync(url);
-        System.Console.WriteLine(responseBody);
         return JsonSerializer.Deserialize<T>(responseBody);
       }
       catch (HttpRequestException e) {
         Console.WriteLine($"Failed to make API request for {path}");
         Console.WriteLine("Message: {0} ", e.Message);
-        throw new Exception();
       }
+      throw new Exception();
     }
 
     private string ConstructUrl(string path) => $"{BaseUrl}/{path}?api_key={ApiKey}";

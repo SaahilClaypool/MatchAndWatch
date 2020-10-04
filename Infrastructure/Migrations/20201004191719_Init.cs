@@ -82,7 +82,8 @@ namespace Infrastructure.Migrations {
             Popularity = table.Column<float>(type: "REAL", nullable: false),
             RatingAverage = table.Column<float>(type: "REAL", nullable: false),
             RatingCount = table.Column<int>(type: "INTEGER", nullable: false),
-            ImdbId = table.Column<string>(type: "TEXT", nullable: true)
+            ImdbId = table.Column<string>(type: "TEXT", nullable: true),
+            OriginalLanguage = table.Column<string>(type: "TEXT", nullable: true)
           },
           constraints: table => {
             table.PrimaryKey("PK_Titles", x => x.Id);

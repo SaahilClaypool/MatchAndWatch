@@ -16,7 +16,6 @@ namespace tmdb.StaticData {
       using var file = new System.IO.StreamReader(File);
       string line;
       while ((line = file.ReadLine()) != null) {
-        line.Dbg();
         var record = JsonSerializer.Deserialize<StaticMovieRecord>(line);
         yield return record;
       }

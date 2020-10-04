@@ -16,11 +16,11 @@ using Microsoft.EntityFrameworkCore;
 namespace IngestData.Tmdb {
   class IngestTmdb {
     private readonly MoviePopulator Populator;
-    private readonly ApplicationDbContext Context;
+    private ApplicationDbContext Context;
     const int BATCH_SIZE = 100;
     public IngestTmdb(MoviePopulator populator) {
       Populator = populator;
-      Context = new DbContextFactory().CreateDbContext(Array.Empty<string>());
+      Context = CreateDbContext();
     }
 
     public async Task Ingest() {
@@ -29,10 +29,11 @@ namespace IngestData.Tmdb {
       await Context.SaveChangesAsync();
       var titleTasks = Populator.GetTitles();
       List<Task<Title>> batch = new();
-      foreach (var (titleTask, index) in titleTasks.Take(10).WithIndex()) {
+      // foreach (var (titleTask, index) in titleTasks.Take(10).WithIndex()) {
+      foreach (var (titleTask, index) in titleTasks.WithIndex()) {
         batch.Add(titleTask);
 
-        if (index + 1 % BATCH_SIZE == 0) {
+        if ((index + 1) % BATCH_SIZE == 0) {
           await AddBatchToDatabase(batch);
           batch.Clear();
         }
@@ -41,11 +42,31 @@ namespace IngestData.Tmdb {
     }
 
     private async Task AddBatchToDatabase(List<Task<Title>> batch) {
-      var finishedTitleTasks = await Task.WhenAll(batch);
+      var finishedTitleTasks = await ResolveTitles(batch);
       foreach (var title in finishedTitleTasks) {
         Context.Titles.Add(title);
       }
       await Context.SaveChangesAsync();
+      await Context.DisposeAsync();
+      Context = CreateDbContext();
+    }
+
+    private static ApplicationDbContext CreateDbContext() =>
+       DbContextFactory.CreateDbContextWithOptions(new() { Log = false });
+
+    private static async Task<IEnumerable<Title>> ResolveTitles(IEnumerable<Task<Title>> titles) {
+      List<Title> resolvedTitles = new();
+      foreach (var titleTask in titles) {
+        try {
+          var resolvedTitle = await titleTask;
+          resolvedTitles.Add(resolvedTitle);
+        }
+        catch (Exception ex) {
+          Console.WriteLine(ex.Message);
+        }
+      }
+
+      return resolvedTitles;
     }
   }
 }

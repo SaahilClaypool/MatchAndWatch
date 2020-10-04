@@ -50,6 +50,9 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("OriginalLanguage")
+                        .HasColumnType("TEXT");
+
                     b.Property<float>("Popularity")
                         .HasColumnType("REAL");
 

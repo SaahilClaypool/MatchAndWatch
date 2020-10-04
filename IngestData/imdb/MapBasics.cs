@@ -29,7 +29,6 @@ namespace IngestData.imdb {
         return year.Equals("\\N") ? null : int.Parse(year);
       }
       catch {
-        year.Dbg();
         return null;
       }
     }

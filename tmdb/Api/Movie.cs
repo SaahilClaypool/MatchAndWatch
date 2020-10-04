@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
@@ -16,9 +17,7 @@ namespace Tmdb.Api {
 
     public async Task<Title> Details(string id) {
       var path = $"movie/{id}";
-      path.Dbg();
       var details = await Client.MakeRequest<MovieDetails>(path);
-      details.Dbg();
       return details.ToTitle();
     }
   }
@@ -45,6 +44,25 @@ namespace Tmdb.Api {
     [JsonPropertyName("vote_count")]
     public int VoteCount { get; set; }
 
+    [JsonPropertyName("popularity")]
+    public float Popularity { get; set; }
+
+    [JsonPropertyName("original_language")]
+    public string? OriginalLanguage { get; set; }
+
+    [JsonPropertyName("release_date")]
+    public string? ReleaseDate { get; set; }
+
+    public int? Year() {
+      try {
+        var date = DateTime.Parse(ReleaseDate);
+        return date.Year;
+      }
+      catch {
+        return null;
+      }
+    }
+
     public Title ToTitle() {
       return new Title {
         Id = Id.ToString(),
@@ -54,6 +72,9 @@ namespace Tmdb.Api {
         RatingAverage = VoteAverage,
         RatingCount = VoteCount,
         ImdbId = ImdbId,
+        OriginalLanguage = OriginalLanguage,
+        Popularity = Popularity,
+        ReleaseYear = Year()
       };
     }
   }

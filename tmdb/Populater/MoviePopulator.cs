@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using Core.Models.Title;
 using tmdb.StaticData;
+using Shared;
 
 namespace Tmdb.Api {
   public class MoviePopulator {

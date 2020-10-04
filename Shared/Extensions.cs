@@ -26,13 +26,18 @@ namespace Shared {
     /// <param name="self">extended object</param>
     /// <param name="pretty">Multi line json</param>
     public static void Dbg(this object self, bool pretty = false) {
-      var CallStack = new StackFrame(1, true);
-      var fileName = CallStack.GetFileName();
-      var lineNum = CallStack.GetFileLineNumber();
-      var type = self.GetType();
+      if (false) {
 
-      string representation = self is string @string ? @string : self.ToJson(pretty);
-      Console.WriteLine($"\nDBG: {fileName}:{lineNum} : {type} - {representation}\n");
+      }
+      else {
+        var CallStack = new StackFrame(1, true);
+        var fileName = CallStack.GetFileName();
+        var lineNum = CallStack.GetFileLineNumber();
+        var type = self.GetType();
+
+        string representation = self is string @string ? @string : self.ToJson(pretty);
+        Console.WriteLine($"\nDBG: {fileName}:{lineNum} : {type} - {representation}\n");
+      }
     }
 
     public static IEnumerable<(T item, int index)> WithIndex<T>(this IEnumerable<T> source) {

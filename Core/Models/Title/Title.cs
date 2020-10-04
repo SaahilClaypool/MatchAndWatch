@@ -14,5 +14,6 @@ namespace Core.Models.Title {
     public float RatingAverage { get; set; }
     public int RatingCount { get; set; }
     public string ImdbId { get; set; }
+    public string OriginalLanguage { get; set; }
   }
 }
