@@ -17,7 +17,7 @@ namespace IngestData.Tmdb {
   class IngestTmdb {
     private readonly MoviePopulator Populator;
     private ApplicationDbContext Context;
-    const int BATCH_SIZE = 100;
+    const int BATCH_SIZE = 500;
     public IngestTmdb(MoviePopulator populator) {
       Populator = populator;
       Context = CreateDbContext();
@@ -42,9 +42,11 @@ namespace IngestData.Tmdb {
     }
 
     private async Task AddBatchToDatabase(List<Task<Title>> batch) {
-      var finishedTitleTasks = await ResolveTitles(batch);
+      var finishedTitleTasks = await Task.WhenAll(batch.Select(title => ResolveTitle(title)));
       foreach (var title in finishedTitleTasks) {
-        Context.Titles.Add(title);
+        if (title is not null) {
+          Context.Titles.Add(title);
+        }
       }
       await Context.SaveChangesAsync();
       await Context.DisposeAsync();
@@ -54,19 +56,15 @@ namespace IngestData.Tmdb {
     private static ApplicationDbContext CreateDbContext() =>
        DbContextFactory.CreateDbContextWithOptions(new() { Log = false });
 
-    private static async Task<IEnumerable<Title>> ResolveTitles(IEnumerable<Task<Title>> titles) {
-      List<Title> resolvedTitles = new();
-      foreach (var titleTask in titles) {
-        try {
-          var resolvedTitle = await titleTask;
-          resolvedTitles.Add(resolvedTitle);
-        }
-        catch (Exception ex) {
-          Console.WriteLine(ex.Message);
-        }
+    private static async Task<Title> ResolveTitle(Task<Title> titleTask) {
+      try {
+        var resolvedTitle = await titleTask;
+        return resolvedTitle;
       }
-
-      return resolvedTitles;
+      catch (Exception ex) {
+        Console.WriteLine(ex.Message);
+        return null;
+      }
     }
   }
 }
