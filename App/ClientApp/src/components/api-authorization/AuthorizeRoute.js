@@ -38,6 +38,7 @@ export default class AuthorizeRoute extends Component {
                     if (authenticated) {
                         return <Component {...props} />
                     } else {
+                        // TODO: move these pages into normal react?
                         return <Redirect to={redirectUrl} />
                     }
                 }} />

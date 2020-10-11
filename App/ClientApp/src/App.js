@@ -9,6 +9,9 @@ import ApiAuthorizationRoutes from './components/api-authorization/ApiAuthorizat
 import { ApplicationPaths } from './components/api-authorization/ApiAuthorizationConstants';
 
 import './custom.css'
+import { HomePage } from './pages/HomePage';
+import { Routes } from './Routes';
+import { SessionRoutes } from './pages/SessionRoutes';
 
 export default class App extends Component {
   static displayName = App.name;
@@ -16,9 +19,9 @@ export default class App extends Component {
   render () {
     return (
       <Layout>
-        <Route exact path='/' component={Home} />
+        <Route exact path={Routes.Root} component={HomePage} />
         <Route path='/counter' component={Counter} />
-        <AuthorizeRoute path='/fetch-data' component={FetchData} />
+        <AuthorizeRoute path={Routes.Session.Base} component={SessionRoutes} />
         <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
       </Layout>
     );
