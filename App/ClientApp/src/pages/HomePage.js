@@ -1,9 +1,8 @@
-import React from 'react';
-import { SessionIndexLoader } from '../components/SessionIndex';
-import { Link } from 'react-router-dom'
-import { Routes } from '../Routes';
-import './HomePage.css'
-
+import React from "react";
+import { SessionIndexLoader } from "../components/SessionIndex";
+import { Link } from "react-router-dom";
+import { Routes } from "../Routes";
+import "./HomePage.css";
 
 export function HomePage() {
   return (
@@ -16,7 +15,7 @@ export function HomePage() {
         <SessionIndexLoader />
       </div>
     </div>
-  )
+  );
 }
 
 function StartSession() {
@@ -24,6 +23,5 @@ function StartSession() {
     <div className="StartSession">
       <Link to={Routes.Session.New}>Start</Link>
     </div>
-  )
+  );
 }
-
