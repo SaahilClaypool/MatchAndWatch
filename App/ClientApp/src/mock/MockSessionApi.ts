@@ -17,4 +17,10 @@ export class MockSessionApi {
       },
     ];
   }
+
+  static GetGenres(): string[] {
+    return [
+      'Comedy', 'Rom-Com', 'Action'
+    ]
+  }
 }
