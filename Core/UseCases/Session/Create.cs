@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 
 using Core.Interfaces;
 using Core.Models.Title;
+using Core.Models;
 
 using FluentValidation;
 
@@ -20,15 +21,25 @@ namespace Core.UseCases.Session {
     }
 
     public class Handler {
-      private ITitleRepository TitleRepository { get; init; }
+      private ISessionRepository SessionRepository { get; init; }
       private ICurrentUserAccessor CurrentUserAccessor { get; init; }
 
-      public Handler(ITitleRepository titleRepository, ICurrentUserAccessor currentUserAccessor) {
-        TitleRepository = titleRepository;
+      public Handler(ISessionRepository sessionRepository, ICurrentUserAccessor currentUserAccessor) {
+        SessionRepository = sessionRepository;
         CurrentUserAccessor = currentUserAccessor;
       }
 
       public async Task Handle(Command message) {
+        var user = CurrentUserAccessor.CurrentUser();
+        Models.Session session = new() {
+          Creater = user,
+          Genres = message.Genres,
+          Participants = new List<ParticipantStatus>() {
+            new() { User = user, CurrentState = ParticipantStatus.State.Invited }
+          }
+        };
+        SessionRepository.Add(session);
+        await SessionRepository.Save();
       }
     }
   }
