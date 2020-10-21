@@ -1,5 +1,8 @@
+using Core.Interfaces;
+
 using Infrastructure.Data;
 using Infrastructure.Models;
+using Infrastructure.Repositories;
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
@@ -24,6 +27,7 @@ namespace App {
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services) {
       services.AddDbContext<ApplicationDbContext>(options => ApplicationDbContext.UseDefaultOptions(options));
+      services.AddScoped<ISessionRepository, SessionRepository>();
 
       services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
           .AddEntityFrameworkStores<ApplicationDbContext>();

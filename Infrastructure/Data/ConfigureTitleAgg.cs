@@ -1,4 +1,10 @@
+using System;
+using System.Collections.Generic;
+
+using Core.Models;
 using Core.Models.Title;
+
+using Infrastructure.Models;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -14,6 +20,27 @@ namespace Shared {
             .HasForeignKey(genre => genre.TitleId)
             .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
+        return modelBuilder;
+      }
+
+      public static ModelBuilder ConfigureSession(this ModelBuilder modelBuilder) {
+        modelBuilder.Entity<Session>()
+            .HasKey(session => session.Id);
+        modelBuilder.Entity<Session>()
+          .HasOne(session => (ApplicationUser)session.Creater)
+          .WithMany();
+
+        modelBuilder.Entity<Session>()
+            .Property(session => session.Genres)
+            .HasConversion(
+                v => string.Join(',', v),
+                v => v.Split(',', StringSplitOptions.RemoveEmptyEntries));
+
+        modelBuilder.Entity<Session>()
+          .OwnsMany(session => session.Participants)
+            .HasOne(participantStatus => (ApplicationUser)participantStatus.User)
+            .WithMany();
+
         return modelBuilder;
       }
 
