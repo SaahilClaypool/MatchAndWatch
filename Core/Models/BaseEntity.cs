@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Models {
   public abstract class BaseEntity {
@@ -6,6 +7,7 @@ namespace Core.Models {
     public DateTime UpdatedDate { get; set; }
   }
   public abstract class Entity : BaseEntity {
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public string Id { get; set; }
   }
 }

@@ -4,8 +4,7 @@ using Core.Interfaces;
 
 namespace Core.Models {
   public class Session : Entity {
-    public string Id { get; set; }
-    public IEnumerable<string> Genres { get; init; }
+    public IEnumerable<string> Genres { get; init; } = new List<string>();
     public IUser Creater { get; init; }
     public IEnumerable<ParticipantStatus> Participants { get; init; }
   }

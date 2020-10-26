@@ -40,6 +40,10 @@ namespace Shared {
           .OwnsMany(session => session.Participants)
             .HasOne(participantStatus => (ApplicationUser)participantStatus.User)
             .WithMany();
+        modelBuilder
+          .Entity<Session>()
+          .Property(e => e.Id)
+          .ValueGeneratedOnAdd();
 
         return modelBuilder;
       }

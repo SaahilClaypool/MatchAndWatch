@@ -1,5 +1,7 @@
+using System.Threading.Tasks;
+
 namespace Core.Interfaces {
   public interface ICurrentUserAccessor {
-    IUser CurrentUser();
+    Task<IUser> CurrentUser();
   }
 }

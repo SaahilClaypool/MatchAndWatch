@@ -17,9 +17,11 @@ namespace App.Controllers {
   public class SessionController : ControllerBase {
 
     private readonly IMediator Mediator;
+    private readonly ILogger Logger;
 
-    public SessionController(IMediator mediator) {
+    public SessionController(IMediator mediator, ILogger<SessionController> logger) {
       Mediator = mediator;
+      Logger = logger;
     }
 
     [HttpPost]
@@ -27,6 +29,7 @@ namespace App.Controllers {
       [FromBody] Create.Command command
     ) {
       var result = await Mediator.Send(command);
+      Logger.LogDebug("create session");
       return Ok(result);
     }
   }

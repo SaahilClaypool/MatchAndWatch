@@ -11,11 +11,15 @@ import "./custom.css";
 import { HomePage } from "./pages/HomePage";
 import { Routes } from "./Routes";
 import { SessionRoutes } from "./pages/SessionRoutes";
+import authService from "./components/api-authorization/AuthorizeService";
+import { FetchData } from "./components/FetchData";
+
 
 export default class App extends Component {
   static displayName = App.name;
 
   render() {
+    const token = authService.getAccessToken().then(token => console.log(token));
     return (
       <Layout>
         <Switch>
@@ -24,6 +28,10 @@ export default class App extends Component {
           <AuthorizeRoute
             path={Routes.Session.Base}
             component={SessionRoutes}
+          />
+          <AuthorizeRoute
+            path="/Weather"
+            component={FetchData}
           />
           <Route
             path={ApplicationPaths.ApiAuthorizationPrefix}

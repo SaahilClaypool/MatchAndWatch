@@ -7,7 +7,7 @@ using Infrastructure.Data;
 
 namespace Infrastructure.Repositories {
   public class SessionRepository : BaseRepository<Session>, ISessionRepository {
-    protected SessionRepository(ApplicationDbContext context) : base(context) {
+    public SessionRepository(ApplicationDbContext context) : base(context) {
 
     }
 

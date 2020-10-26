@@ -30,7 +30,7 @@ namespace Core.UseCases.Session {
       }
 
       public async Task<Unit> Handle(Command request, CancellationToken cancellationToken) {
-        var user = CurrentUserAccessor.CurrentUser();
+        var user = await CurrentUserAccessor.CurrentUser();
         Models.Session session = new() {
           Creater = user,
           Genres = request.Genres,
