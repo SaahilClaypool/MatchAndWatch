@@ -18,6 +18,7 @@ using Microsoft.Extensions.Hosting;
 using MediatR;
 using Microsoft.OpenApi.Models;
 using Core.UseCases;
+using FluentValidation;
 
 namespace App {
   public class Startup {
@@ -42,11 +43,18 @@ namespace App {
       services.AddAuthentication()
           .AddIdentityServerJwt();
 
-      services.AddControllersWithViews();
+      // https://docs.microsoft.com/en-us/aspnet/core/web-api/handle-errors?view=aspnetcore-3.1
+      services.AddControllersWithViews(options => options.Filters.Add(new ValidationErrorHandler()));
       services.AddRazorPages();
 
       services.AddMediatR(typeof(Core.UseCases.Session.Create));
+      AssemblyScanner.FindValidatorsInAssembly(typeof(Core.UseCases.Session.Create).Assembly)
+        .ForEach(item => services.AddScoped(item.InterfaceType, item.ValidatorType));
       services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
+      // For all the validators, register them with dependency injection as scoped
+
+
+
       _ = services.AddSwaggerGen(c => {
         c.SwaggerDoc("v1", new OpenApiInfo {
           Title = "My API",
