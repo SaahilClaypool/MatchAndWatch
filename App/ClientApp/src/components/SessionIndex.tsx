@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Spinner } from "../components/Spinners";
 import PropTypes from "prop-types";
 import { Session } from "../services/Session";
-import { MockSessionApi } from "../mock/MockSessionApi";
+import { MockSessionApi } from "../api/MockSessionApi";
 import { Link } from "react-router-dom";
 import "./SessionIndex.css";
 import { Routes } from "../Routes";

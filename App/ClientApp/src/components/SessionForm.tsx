@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { MockSessionApi } from "../mock/MockSessionApi";
+import { MockSessionApi } from "../api/MockSessionApi";
 import { Spinner } from "./Spinners";
 
 export function SessionForm() {
@@ -43,16 +43,20 @@ function GenreCheckbox({ genre }: { genre: string }) {
 
 function FormContent() {
   let state = useContext(SessionFormContext);
-  let submit = () => {
-    console.log(state);
+  let submit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    event.preventDefault();
   }
 
   return (
     state.loading?.get ?
       <Spinner /> :
       <div className="formContent">
+        <div>
+          <input type="text" placeholder="SessionName"
+            value={state.name.get} onChange={e => state.name.set(e.target.value)} />
+        </div>
         {state.genres?.get.map(genre => <GenreCheckbox key={genre} {...{ genre }} />)}
-        <button onClick={_e => submit()}>Submit</button>
+        <button onClick={e => submit(e)}>Submit</button>
       </div >
   );
 
@@ -63,6 +67,7 @@ type SessionFormContextProps = {
   loading: state<boolean>,
   genres: state<string[]>,
   selectedGenres: state<string[]>
+  name: state<string>,
 }
 
 const SessionFormContext = React.createContext<SessionFormContextProps>({
@@ -74,12 +79,16 @@ const SessionFormContext = React.createContext<SessionFormContextProps>({
   },
   selectedGenres: {
     get: [], set: () => { }
+  },
+  name: {
+    get: '', set: () => { }
   }
 });
 function SessionFormState(props: { children: React.ReactNode }) {
   let [genres, setGenres] = useState<string[]>([]);
   let [selectedGenres, setSelectedGenres] = useState<string[]>([]);
   let [loading, setLoading] = useState(true);
+  let [name, setName] = useState('');
 
   useEffect(() => {
     setGenres(MockSessionApi.GetGenres());
@@ -90,7 +99,8 @@ function SessionFormState(props: { children: React.ReactNode }) {
     <SessionFormContext.Provider value={{
       loading: { get: loading, set: setLoading },
       genres: { get: genres, set: setGenres },
-      selectedGenres: { get: selectedGenres, set: setSelectedGenres }
+      selectedGenres: { get: selectedGenres, set: setSelectedGenres },
+      name: { get: name, set: setName }
     }}>
       {
         props.children

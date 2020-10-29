@@ -14,7 +14,6 @@ namespace Core.Models {
       Invited,
       Completed
     }
-    public Session Session { get; init; }
     public IUser User { get; init; }
     public State CurrentState { get; init; }
   }

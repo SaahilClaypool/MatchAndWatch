@@ -19,6 +19,7 @@ using MediatR;
 using Microsoft.OpenApi.Models;
 using Core.UseCases;
 using FluentValidation;
+using System.Text.Json.Serialization;
 
 namespace App {
   public class Startup {
@@ -44,7 +45,8 @@ namespace App {
           .AddIdentityServerJwt();
 
       // https://docs.microsoft.com/en-us/aspnet/core/web-api/handle-errors?view=aspnetcore-3.1
-      services.AddControllersWithViews(options => options.Filters.Add(new ValidationErrorHandler()));
+      services.AddControllersWithViews(options => options.Filters.Add(new ValidationErrorHandler()))
+      ;
       services.AddRazorPages();
 
       services.AddMediatR(typeof(Core.UseCases.Session.Create));
