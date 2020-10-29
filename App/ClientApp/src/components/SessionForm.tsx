@@ -1,29 +1,27 @@
 import React, { useContext, useEffect, useState } from "react";
 import { MockSessionApi } from "../api/MockSessionApi";
+import { SessionApi } from "../api/SessionApi";
 import { Spinner } from "./Spinners";
 
 export function SessionForm() {
   return (
     <div>
-      <SessionFormState>
-        <FormContent />
-      </SessionFormState>
+      <FormContent />
     </div>
   )
 }
 
-function GenreCheckbox({ genre }: { genre: string }) {
-  let state = useContext(SessionFormContext);
-  let isChecked = state.selectedGenres.get.filter(e => e === genre).length > 0;
+function GenreCheckbox({ genre, selected }: { genre: string, selected: State<string[]> }) {
+  let isChecked = selected.get.filter(e => e === genre).length > 0;
   let [checked, setChecked] = useState(isChecked)
   let toggle = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!checked) {
-      let selectedGenres = state.selectedGenres.get;
+      let selectedGenres = selected.get;
       selectedGenres.push(genre);
-      state.selectedGenres.set(selectedGenres);
+      selected.set(selectedGenres);
     } else {
-      let selectedGenres = state.selectedGenres.get.filter(e => e !== genre);
-      state.selectedGenres.set(selectedGenres);
+      let selectedGenres = selected.get.filter(e => e !== genre);
+      selected.set(selectedGenres);
     }
     setChecked(!checked);
   }
@@ -41,70 +39,49 @@ function GenreCheckbox({ genre }: { genre: string }) {
   )
 }
 
+type State<T> = { get: T, set: (value: T) => void }
+function useStateObject<T>(val: any): State<T> {
+  var [state, setState] = useState<T>(val);
+  return { get: state, set: setState }
+}
+
 function FormContent() {
-  let state = useContext(SessionFormContext);
+  let state = {
+    loading: useStateObject<boolean>(true),
+    genres: useStateObject<string[]>([]),
+    selectedGenres: useStateObject<string[]>([]),
+    name: useStateObject<string>('')
+  };
+
+  useEffect(() => {
+    state.genres.set(MockSessionApi.GetGenres());
+    state.loading.set(false);
+  }, [])
+
   let submit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     event.preventDefault();
+    SessionApi.CreateSession({
+      name: state.name.get,
+      creator: '', // set in backend
+      genres: state.genres.get
+    })
   }
 
   return (
-    state.loading?.get ?
+    state.loading.get ?
       <Spinner /> :
       <div className="formContent">
         <div>
           <input type="text" placeholder="SessionName"
             value={state.name.get} onChange={e => state.name.set(e.target.value)} />
         </div>
-        {state.genres?.get.map(genre => <GenreCheckbox key={genre} {...{ genre }} />)}
+        {
+          state.genres?.get.map(genre =>
+            <GenreCheckbox selected={state.selectedGenres} key={genre} {...{ genre }} />
+          )
+        }
         <button onClick={e => submit(e)}>Submit</button>
       </div >
   );
 
-}
-
-type state<T> = { get: T, set: (value: T) => void }
-type SessionFormContextProps = {
-  loading: state<boolean>,
-  genres: state<string[]>,
-  selectedGenres: state<string[]>
-  name: state<string>,
-}
-
-const SessionFormContext = React.createContext<SessionFormContextProps>({
-  loading: {
-    get: true, set: () => { }
-  },
-  genres: {
-    get: [], set: () => { }
-  },
-  selectedGenres: {
-    get: [], set: () => { }
-  },
-  name: {
-    get: '', set: () => { }
-  }
-});
-function SessionFormState(props: { children: React.ReactNode }) {
-  let [genres, setGenres] = useState<string[]>([]);
-  let [selectedGenres, setSelectedGenres] = useState<string[]>([]);
-  let [loading, setLoading] = useState(true);
-  let [name, setName] = useState('');
-
-  useEffect(() => {
-    setGenres(MockSessionApi.GetGenres());
-    setLoading(false);
-  }, []);
-
-  return (
-    <SessionFormContext.Provider value={{
-      loading: { get: loading, set: setLoading },
-      genres: { get: genres, set: setGenres },
-      selectedGenres: { get: selectedGenres, set: setSelectedGenres },
-      name: { get: name, set: setName }
-    }}>
-      {
-        props.children
-      }
-    </SessionFormContext.Provider>
-  )
 }

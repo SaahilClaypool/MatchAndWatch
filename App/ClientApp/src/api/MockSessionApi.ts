@@ -6,14 +6,17 @@ export class MockSessionApi {
       {
         name: "RomCom w/ Sarah",
         creator: "saahil",
+        genres: []
       },
       {
         name: "Action w/ Sarah",
         creator: "saahil",
+        genres: []
       },
       {
         name: "Other",
         creator: "sarah",
+        genres: []
       },
     ];
   }
