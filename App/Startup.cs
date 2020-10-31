@@ -20,6 +20,12 @@ using Microsoft.OpenApi.Models;
 using Core.UseCases;
 using FluentValidation;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using System;
+using System.IO;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace App {
   public class Startup {
@@ -33,6 +39,7 @@ namespace App {
     public void ConfigureServices(IServiceCollection services) {
       services.AddDbContext<ApplicationDbContext>(options => ApplicationDbContext.UseDefaultOptions(options));
       services.AddScoped<ISessionRepository, SessionRepository>();
+      services.AddScoped<IGenreRepository, GenreRepository>();
       services.AddScoped<ICurrentUserAccessor, CurrentUserAccessor>();
 
       services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -123,7 +130,7 @@ namespace App {
       app.UseEndpoints(endpoints => {
         endpoints.MapControllerRoute(
             name: "default",
-            pattern: "{controller}/{action=Index}/{id?}");
+            pattern: "api/{controller}/{action=Index}/{id?}");
         endpoints.MapRazorPages();
       });
 

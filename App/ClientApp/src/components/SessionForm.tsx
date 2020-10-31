@@ -54,7 +54,7 @@ function FormContent() {
   };
 
   useEffect(() => {
-    state.genres.set(MockSessionApi.GetGenres());
+    SessionApi.GetGenres().then(genres => state.genres.set(genres));
     state.loading.set(false);
   }, [])
 

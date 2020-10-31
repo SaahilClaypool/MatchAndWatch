@@ -20,6 +20,8 @@ namespace Shared {
             .HasForeignKey(genre => genre.TitleId)
             .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
+        modelBuilder.Entity<Genre>()
+          .ToTable("Genre");
         return modelBuilder;
       }
 

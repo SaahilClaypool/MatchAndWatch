@@ -12,7 +12,7 @@ export class Api {
 
     }
 
-    private static req = async (url: string, method: string, body?: object, extraHeaders?: object): Promise<object> => {
+    private static req = async (url: string, method: string, body?: object, extraHeaders?: object) => {
         let headers = await Api.headers();
         let response = await fetch(url, {
             method,

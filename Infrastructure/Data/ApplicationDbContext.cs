@@ -21,6 +21,7 @@ namespace Infrastructure.Data {
   public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser> {
 
     public DbSet<Title> Titles { get; set; }
+    public DbSet<Genre> Genres { get; set; }
     public DbSet<Session> Sessions { get; set; }
 
     public ApplicationDbContext(

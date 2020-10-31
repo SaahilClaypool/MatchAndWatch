@@ -13,7 +13,7 @@ using Core.UseCases.Session;
 namespace App.Controllers {
   [Authorize]
   [ApiController]
-  [Route("[controller]")]
+  [Route("api/[controller]")]
   public class SessionController : ControllerBase {
 
     private readonly IMediator Mediator;
