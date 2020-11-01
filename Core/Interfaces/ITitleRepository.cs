@@ -4,5 +4,5 @@ using System.Threading.Tasks;
 using Core.Models.Title;
 
 namespace Core.Interfaces {
-  public interface ITitleRepository : IBaseRepository<Title> { }
+    public interface ITitleRepository : IBaseRepository<Title> { }
 }

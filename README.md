@@ -39,8 +39,9 @@ A dating-app inspired movie / show finder.
 - [x] Set up data structure
 - [x] Add fluent validation
 - [x] Add test project
-- [ ] Add mediatR
-- [ ] Add swagger auto docs
+- [x] Add mediatR
+- [x] Add swagger auto docs
+- [ ] core app logic
 
 ## Possible features
 
