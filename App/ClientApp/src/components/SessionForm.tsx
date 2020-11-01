@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { MockSessionApi } from "../api/MockSessionApi";
 import { SessionApi } from "../api/SessionApi";
+import { ErrorResponse, FlashError } from "./FlashError";
 import { Spinner } from "./Spinners";
 
 export function SessionForm() {
@@ -50,7 +51,8 @@ function FormContent() {
     loading: useStateObject<boolean>(true),
     genres: useStateObject<string[]>([]),
     selectedGenres: useStateObject<string[]>([]),
-    name: useStateObject<string>('')
+    name: useStateObject<string>(''),
+    errorResponse: useStateObject<ErrorResponse | null>(null),
   };
 
   useEffect(() => {
@@ -58,29 +60,39 @@ function FormContent() {
     state.loading.set(false);
   }, [])
 
-  let submit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  let submit = (event: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
     event.preventDefault();
     SessionApi.CreateSession({
       name: state.name.get,
       creator: '', // set in backend
-      genres: state.genres.get
+      genres: state.selectedGenres.get
     })
+      .then(_ => state.errorResponse.set(null))
+      .catch(e => {
+        state.errorResponse.set({ errors: e })
+    })
+
   }
 
   return (
     state.loading.get ?
       <Spinner /> :
-      <div className="formContent">
-        <div>
-          <input type="text" placeholder="SessionName"
-            value={state.name.get} onChange={e => state.name.set(e.target.value)} />
-        </div>
-        {
-          state.genres?.get.map(genre =>
-            <GenreCheckbox selected={state.selectedGenres} key={genre} {...{ genre }} />
-          )
-        }
-        <button onClick={e => submit(e)}>Submit</button>
+      <div>
+        {state.errorResponse.get !== null ? <FlashError {...state.errorResponse.get} /> : <></>}
+        <form>
+          <div className="formContent">
+            <div>
+              <input type="text" placeholder="SessionName"
+                value={state.name.get} onChange={e => state.name.set(e.target.value)} />
+            </div>
+            {
+              state.genres?.get.map(genre =>
+                <GenreCheckbox selected={state.selectedGenres} key={genre} {...{ genre }} />
+              )
+            }
+            <input type="submit" onClick={e => submit(e)} />
+          </div >
+        </form>
       </div >
   );
 

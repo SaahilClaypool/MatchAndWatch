@@ -1,29 +1,30 @@
 import React from "react";
 
 
-export interface ErrorResonse {
-    type: string,
-    title: string,
-    status: number,
-    errors: Map<string, string[]>
+export interface ErrorResponse {
+    errors: InputError[]
+}
+export interface InputError {
+    errorMessage: string,
+    propertyName: string
 }
 
-export function FlashError(props: ErrorResonse) {
+export function FlashError(props: ErrorResponse) {
     return (
         <div className="error">
             <h3>
-                {props.title}
+                Error
             </h3>
-            {
-                props.errors.forEach((errors, field) => (
-                    <div>
-                        <strong>{field}</strong>
-                        <ul>
-                            {errors.map((error) => <li>{error}</li>)}
-                        </ul>
-                    </div>
-                ))
-            }
+            <ul>
+                {
+                    props.errors.map(error => (
+                        <li>
+                            <strong>{error.propertyName}:</strong>
+                            {error.errorMessage}
+                        </li>
+                    ))
+                }
+            </ul>
         </div >
     )
 }

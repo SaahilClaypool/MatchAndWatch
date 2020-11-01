@@ -13,13 +13,13 @@ namespace Core.UseCases.Session {
     public class Create {
         public record Command(
           IEnumerable<string> Genres,
-          string SessionName
+          string Name
         ) : IRequest;
 
     public class CommandValidator : AbstractValidator<Command> {
             public CommandValidator() {
                 RuleFor(c => c.Genres).NotNull().NotEmpty();
-                RuleFor(c => c.SessionName).NotNull().NotEmpty();
+                RuleFor(c => c.Name).NotNull().NotEmpty();
             }
         }
 
@@ -38,8 +38,8 @@ namespace Core.UseCases.Session {
                     Creater = user,
                     Genres = request.Genres,
                     Participants = new List<ParticipantStatus>() {
-            new() { User = user, CurrentState = ParticipantStatus.State.Invited }
-          }
+                        new() { User = user, CurrentState = ParticipantStatus.State.Invited }
+                    }
                 };
                 SessionRepository.Add(session);
                 await SessionRepository.Save();

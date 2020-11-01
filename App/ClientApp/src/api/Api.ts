@@ -22,7 +22,12 @@ export class Api {
             },
             body: JSON.stringify(body)
         });
-        return await response.json();
+        let responseJson = await response.json();
+        if (response.ok) {
+            return responseJson;
+        } else {
+            throw responseJson
+        }
     }
 
     public static get = async (url: string, extraHeaders?: object): Promise<object> => await Api.req(url, 'GET', extraHeaders);
