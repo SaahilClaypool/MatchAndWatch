@@ -2,7 +2,7 @@ using System.Linq;
 
 using Core.Models.Title;
 
-using Shared;
+using Infrastructure;
 
 namespace IngestData.imdb {
   class MapBasics : AMapper<BasicsRow, Title> {

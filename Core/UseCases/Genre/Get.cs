@@ -34,8 +34,7 @@ namespace Core.UseCases.Genre {
 
       public Task<IEnumerable<string>> Handle(Command request, CancellationToken cancellationToken) =>
         Task.FromResult(
-          Repository.Items().Select(genre => genre.Name).Distinct()
-            .AsEnumerable()
+          Repository.ItemsNoTracking().Select(genre => genre.Name).Distinct().AsEnumerable()
           );
     }
   }

@@ -3,6 +3,7 @@ using System.Linq;
 using Core.Interfaces;
 using Core.Models;
 using Core.Models.Title;
+using Microsoft.EntityFrameworkCore;
 
 using Infrastructure.Data;
 
@@ -12,6 +13,7 @@ namespace Infrastructure.Repositories {
 
     }
 
-    public override IQueryable<Genre> Items() => Context.Genres.AsQueryable();
+    public override IQueryable<Genre> Items() =>
+      Context.Titles.AsNoTracking().SelectMany(title => title.Genres);
   }
 }

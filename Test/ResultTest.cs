@@ -2,7 +2,7 @@ using System;
 
 using Xunit;
 using Core;
-using Shared;
+using Infrastructure;
 
 namespace Test {
   public class ResultTest {

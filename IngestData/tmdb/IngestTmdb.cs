@@ -8,7 +8,7 @@ using Core.Models.Title;
 using Infrastructure.Data;
 using Infrastructure;
 
-using Shared;
+using Infrastructure;
 
 using Tmdb.Api;
 using Microsoft.EntityFrameworkCore;

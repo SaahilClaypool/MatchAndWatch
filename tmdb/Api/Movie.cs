@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using Core.Models.Title;
 
-using Shared;
+using Infrastructure;
 
 namespace Tmdb.Api {
   public class MovieClient {

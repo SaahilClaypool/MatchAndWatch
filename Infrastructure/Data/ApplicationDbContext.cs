@@ -15,8 +15,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
-using Shared.Infrastructure.Data;
-
 namespace Infrastructure.Data {
   public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser> {
 
@@ -43,6 +41,7 @@ namespace Infrastructure.Data {
           .UseSqlite("DataSource=../app.db;Cache=Shared", b => b.MigrationsAssembly("Infrastructure"));
       if (useLogger) {
         options.UseLoggerFactory(loggerFactory);
+        options.EnableSensitiveDataLogging();
       }
     }
 

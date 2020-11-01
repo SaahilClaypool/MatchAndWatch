@@ -3,7 +3,7 @@ using System;
 using System.Threading.Tasks;
 using Tmdb.Api;
 using System.Linq;
-using Shared;
+using Infrastructure;
 using IngestData.Tmdb;
 
 namespace IngestData {

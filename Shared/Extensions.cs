@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Shared {
+namespace Infrastructure {
   public static class Extensions {
     /// <summary>
     /// Print any object using the system json

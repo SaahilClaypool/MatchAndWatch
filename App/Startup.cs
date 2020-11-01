@@ -25,7 +25,6 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.IO;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 
 namespace App {
   public class Startup {
@@ -37,6 +36,13 @@ namespace App {
 
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services) {
+      services.AddMemoryCache();
+      services.AddMiniProfiler(options => {
+        options.RouteBasePath = "/profiler";
+        options.EnableDebugMode = true;
+      }).AddEntityFramework();
+      services.AddControllers();
+
       services.AddDbContext<ApplicationDbContext>(options => ApplicationDbContext.UseDefaultOptions(options));
       services.AddScoped<ISessionRepository, SessionRepository>();
       services.AddScoped<IGenreRepository, GenreRepository>();
@@ -118,6 +124,7 @@ namespace App {
         app.UseHsts();
       }
 
+      app.UseMiniProfiler();
       app.UseHttpsRedirection();
       app.UseStaticFiles();
       app.UseSpaStaticFiles();

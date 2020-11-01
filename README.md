@@ -53,3 +53,11 @@ A dating-app inspired movie / show finder.
 ## Uses
 
 [TMDB api](https://developers.themoviedb.org/3)
+
+## Useful queries
+
+```
+.timer on
+.headers on
+.mode column
+```

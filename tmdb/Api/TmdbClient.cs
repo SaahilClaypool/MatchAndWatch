@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using System;
 using System.Net.Http;
 using System.Text.Json;
-using Shared;
+using Infrastructure;
 
 namespace Tmdb.Api {
   public class TmdbClient {

@@ -14,7 +14,7 @@ using Infrastructure.Data;
 
 using Microsoft.EntityFrameworkCore;
 
-using Shared;
+using Infrastructure;
 
 namespace IngestData.imdb {
   public class ImdbIngester : AIngester {

@@ -3,7 +3,7 @@ using System.Linq;
 using Core.Models;
 using Core.Models.Title;
 
-using Shared;
+using Infrastructure;
 
 // namespace IngestData.imdb {
 //   class MapRatings : AMapper<RatingsRow, Rating> {
