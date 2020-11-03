@@ -49,6 +49,7 @@ namespace App {
             services.AddDbContext<ApplicationDbContext>(options => ApplicationDbContext.UseDefaultOptions(options));
             services.AddScoped<ISessionRepository, SessionRepository>();
             services.AddScoped<IGenreRepository, GenreRepository>();
+            services.AddScoped<ITitleRepository, TitleRepository>();
             services.AddScoped<ICurrentUserAccessor, CurrentUserAccessor>();
 
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)

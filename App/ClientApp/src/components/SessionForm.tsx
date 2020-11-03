@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { MockSessionApi } from "../api/MockSessionApi";
 import { SessionApi } from "../api/SessionApi";
+import { useStateObject } from "../services/StateHelpers";
 import { ErrorResponse, FlashError } from "./FlashError";
 import { Spinner } from "./Spinners";
 
@@ -38,12 +39,6 @@ function GenreCheckbox({ genre, selected }: { genre: string, selected: State<str
       <label htmlFor={genre}>{genre}</label>
     </li>
   )
-}
-
-type State<T> = { get: T, set: (value: T) => void }
-function useStateObject<T>(val: any): State<T> {
-  var [state, setState] = useState<T>(val);
-  return { get: state, set: setState }
 }
 
 function FormContent() {
