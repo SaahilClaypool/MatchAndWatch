@@ -19,10 +19,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 using Shared.DTO.Login;
 
+// https://devblogs.microsoft.com/aspnet/asp-net-core-authentication-with-identityserver4/
+// has example of the message type needed to get token from identityserver4
 namespace App.Controllers {
     [ApiController]
     [Route("api/[controller]")]
@@ -45,7 +48,7 @@ namespace App.Controllers {
             if (!result.Succeeded) {
                 return new LoginResultDTO(false, "");
             }
-            var user = await CurrentUserAccessor.CurrentUserByUsername(details.username);
+            var user = await CurrentUserAccessor.FindByUsername(details.username);
             var token = GenerateJwtToken(user);
             Logger.LogDebug($"Logged in {details.username} with token {token}");
 
@@ -60,6 +63,7 @@ namespace App.Controllers {
 
 
         private static string GenerateJwtToken(IUser user) {
+            //https://jasonwatmore.com/post/2019/10/11/aspnet-core-3-jwt-authentication-tutorial-with-example-api
             // generate token that is valid for 7 days
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes("The quick brown foxes jumped over the lazy brown dogs");

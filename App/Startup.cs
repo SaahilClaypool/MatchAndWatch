@@ -25,6 +25,7 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
@@ -51,15 +52,12 @@ namespace App {
             services.AddScoped<IGenreRepository, GenreRepository>();
             services.AddScoped<ITitleRepository, TitleRepository>();
             services.AddScoped<ICurrentUserAccessor, CurrentUserAccessor>();
-
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
-
-            services.AddIdentityServer()
-                .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
-
-            services.AddAuthentication()
-                .AddIdentityServerJwt();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddIdentity<ApplicationUser, IdentityRole>(options => {
+                options.User.RequireUniqueEmail = false;
+            })
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
             // https://docs.microsoft.com/en-us/aspnet/core/web-api/handle-errors?view=aspnetcore-3.1
             services.AddControllersWithViews(options => options.Filters.Add(new ValidationErrorHandler()))
@@ -135,8 +133,15 @@ namespace App {
 
             app.UseRouting();
 
+            // global cors policy
+            app.UseCors(x => x
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+            app.UseMiddleware<JwtMiddleware>();
+
             app.UseAuthentication();
-            app.UseIdentityServer();
+            // app.UseIdentityServer();
             app.UseAuthorization();
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllerRoute(

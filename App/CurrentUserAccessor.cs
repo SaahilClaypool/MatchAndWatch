@@ -8,6 +8,7 @@ using Core.Interfaces;
 using Infrastructure.Data;
 
 using Microsoft.AspNetCore.Http;
+using Infrastructure;
 
 namespace App {
     public class CurrentUserAccessor : ICurrentUserAccessor {
@@ -19,8 +20,12 @@ namespace App {
             Context = context;
         }
 
-        public async Task<IUser> CurrentUserByUsername(string username) {
+        public async Task<IUser> FindByUsername(string username) {
             return await Context.Users.Where(user => user.UserName == username).FirstAsync();
+        }
+
+        public async Task<IUser> FindById(string id) {
+            return await Context.Users.Where(user => user.Id == id).FirstAsync();
         }
 
         public async Task<IUser> CurrentUser() {
