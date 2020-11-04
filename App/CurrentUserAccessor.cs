@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 using Core.Interfaces;
 
@@ -16,6 +17,10 @@ namespace App {
         public CurrentUserAccessor(IHttpContextAccessor httpContextAccessor, ApplicationDbContext context) {
             HttpContextAccessor = httpContextAccessor;
             Context = context;
+        }
+
+        public async Task<IUser> CurrentUserByUsername(string username) {
+            return await Context.Users.Where(user => user.UserName == username).FirstAsync();
         }
 
         public async Task<IUser> CurrentUser() {

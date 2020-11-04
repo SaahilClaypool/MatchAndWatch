@@ -11,7 +11,7 @@ namespace Core.Services.Session {
     class SessionManager {
         public ITitleRepository TitleRepository { get; }
         private Models.Session Session { get; init; }
-        private string CurrentUserId { get; init }
+        private string CurrentUserId { get; init; }
 
         public SessionManager(ITitleRepository TitleRepository, Models.Session session, string currentUserId) {
             this.TitleRepository = TitleRepository;

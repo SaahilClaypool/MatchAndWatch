@@ -46,6 +46,10 @@ namespace Infrastructure.Data {
               .Entity<Session>()
               .Property(e => e.Id)
               .ValueGeneratedOnAdd();
+            modelBuilder
+                .Entity<Rating>()
+                .HasOne(rating => (ApplicationUser)rating.User)
+                .WithMany();
 
             return modelBuilder;
         }

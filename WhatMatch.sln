@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastru
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tmdb", "tmdb\tmdb.csproj", "{68262139-2D44-4DB7-8D92-FDB6C851209B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blazor", "Blazor\Blazor.csproj", "{F58A5936-AACF-4984-A32B-ACA6EC5C0D12}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -114,5 +116,17 @@ Global
 		{68262139-2D44-4DB7-8D92-FDB6C851209B}.Release|x64.Build.0 = Release|Any CPU
 		{68262139-2D44-4DB7-8D92-FDB6C851209B}.Release|x86.ActiveCfg = Release|Any CPU
 		{68262139-2D44-4DB7-8D92-FDB6C851209B}.Release|x86.Build.0 = Release|Any CPU
+		{F58A5936-AACF-4984-A32B-ACA6EC5C0D12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F58A5936-AACF-4984-A32B-ACA6EC5C0D12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F58A5936-AACF-4984-A32B-ACA6EC5C0D12}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F58A5936-AACF-4984-A32B-ACA6EC5C0D12}.Debug|x64.Build.0 = Debug|Any CPU
+		{F58A5936-AACF-4984-A32B-ACA6EC5C0D12}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F58A5936-AACF-4984-A32B-ACA6EC5C0D12}.Debug|x86.Build.0 = Debug|Any CPU
+		{F58A5936-AACF-4984-A32B-ACA6EC5C0D12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F58A5936-AACF-4984-A32B-ACA6EC5C0D12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F58A5936-AACF-4984-A32B-ACA6EC5C0D12}.Release|x64.ActiveCfg = Release|Any CPU
+		{F58A5936-AACF-4984-A32B-ACA6EC5C0D12}.Release|x64.Build.0 = Release|Any CPU
+		{F58A5936-AACF-4984-A32B-ACA6EC5C0D12}.Release|x86.ActiveCfg = Release|Any CPU
+		{F58A5936-AACF-4984-A32B-ACA6EC5C0D12}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

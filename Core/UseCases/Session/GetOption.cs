@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using FluentValidation;
 
 using MediatR;
+using System;
 
 namespace Core.UseCases.Session {
     public class GetOption {
@@ -35,6 +36,7 @@ namespace Core.UseCases.Session {
 
             public async Task<Unit> Handle(Command request, CancellationToken cancellationToken) {
                 var session = SessionRepository.ItemsNoTracking().Where(session => session.Id == request.Id);
+                throw new NotImplementedException();
             }
         }
     }
