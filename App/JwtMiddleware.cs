@@ -1,6 +1,7 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,22 +12,22 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace App {
     public class JwtMiddleware {
-        private readonly RequestDelegate _next;
+        private readonly RequestDelegate Next;
 
         public JwtMiddleware(RequestDelegate next) {
-            _next = next;
+            Next = next;
         }
 
-        public async Task Invoke(HttpContext context, ICurrentUserAccessor userService) {
+        public async Task Invoke(HttpContext context, ICurrentUserAccessor currentUserAccessor) {
             var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
 
             if (token != null)
-                await AttachUserToContext(context, userService, token);
+                await AttachUserToContext(context, currentUserAccessor, token);
 
-            await _next(context);
+            await Next(context);
         }
 
-        private async Task AttachUserToContext(HttpContext context, ICurrentUserAccessor userService, string token) {
+        private static async Task AttachUserToContext(HttpContext context, ICurrentUserAccessor currentUserAccessor, string token) {
             try {
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var key = Encoding.ASCII.GetBytes("The quick brown foxes jumped over the lazy brown dogs");
@@ -40,15 +41,34 @@ namespace App {
                 }, out SecurityToken validatedToken);
 
                 var jwtToken = (JwtSecurityToken)validatedToken;
-                var userId = jwtToken.Claims.First(x => x.Type == "id").Value;
+                var userId = jwtToken.Claims.First(x => x.Type == ClaimTypes.Name).Value;
 
                 // attach user to context on successful jwt validation
-                context.Items["User"] = await userService.FindById(userId);
+                context.Items["User"] = await currentUserAccessor.FindById(userId);
             }
             catch {
                 // do nothing if jwt validation fails
                 // user is not attached to context so request won't have access to secure routes
             }
+        }
+
+        /// <summary>
+        ///  Create the jwt token for the user that wee validate above
+        /// </summary>
+        /// <param name="user">User of the jwt token</param>
+        /// <returns>jwt written to string</returns>
+        public static string GenerateJwtToken(IUser user) {
+            //https://jasonwatmore.com/post/2019/10/11/aspnet-core-3-jwt-authentication-tutorial-with-example-api
+            // generate token that is valid for 7 days
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes("The quick brown foxes jumped over the lazy brown dogs");
+            var tokenDescriptor = new SecurityTokenDescriptor {
+                Subject = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, user.Id.ToString()) }),
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
         }
     }
 
