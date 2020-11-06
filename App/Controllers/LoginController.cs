@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 
-using Shared.DTO.Login;
+using DTO.Login;
 
 // https://devblogs.microsoft.com/aspnet/asp-net-core-authentication-with-identityserver4/
 // has example of the message type needed to get token from identityserver4
@@ -35,13 +35,13 @@ namespace App.Controllers {
         public async Task<LoginResultDTO> LogIn(
             [FromBody] LoginDTO details
         ) {
-            var result = await SignInManager.PasswordSignInAsync(details.username, details.password, true, false);
+            var result = await SignInManager.PasswordSignInAsync(details.Username, details.Password, true, false);
             if (!result.Succeeded) {
                 return new LoginResultDTO(false, "");
             }
-            var user = await CurrentUserAccessor.FindByUsername(details.username);
+            var user = await CurrentUserAccessor.FindByUsername(details.Username);
             var token = JwtMiddleware.GenerateJwtToken(user);
-            Logger.LogDebug($"Logged in {details.username} with token {token}");
+            Logger.LogDebug($"Logged in {details.Username} with token {token}");
 
             return new LoginResultDTO(true, token);
         }

@@ -19,11 +19,14 @@ namespace App {
         }
 
         public async Task Invoke(HttpContext context, ICurrentUserAccessor currentUserAccessor) {
+            System.Console.WriteLine("SMC: Critical");
             var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            System.Console.WriteLine(token);
 
             if (token != null)
                 await AttachUserToContext(context, currentUserAccessor, token);
 
+            System.Console.WriteLine("DONE");
             await Next(context);
         }
 
