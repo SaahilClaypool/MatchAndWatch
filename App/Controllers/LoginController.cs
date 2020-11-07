@@ -40,7 +40,7 @@ namespace App.Controllers {
                 return new LoginResultDTO(false, "");
             }
             var user = await CurrentUserAccessor.FindByUsername(details.Username);
-            var token = JwtMiddleware.GenerateJwtToken(user);
+            var token = JwtMiddleware.GenerateJwtToken(user, Logger);
             Logger.LogDebug($"Logged in {details.Username} with token {token}");
 
             return new LoginResultDTO(true, token);

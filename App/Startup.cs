@@ -14,7 +14,6 @@ using Infrastructure.Repositories;
 
 using MediatR;
 
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -131,9 +130,6 @@ namespace App {
 
             app.UseMiddleware<JwtMiddleware>();
 
-            app.UseAuthentication();
-            // app.UseIdentityServer();
-            app.UseAuthorization();
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllerRoute(
                     name: "default",
