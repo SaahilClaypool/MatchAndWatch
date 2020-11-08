@@ -33,10 +33,14 @@ namespace App.Controllers {
 
         [HttpPost]
         public async Task<ActionResult> Create(
-          [FromBody] Create.Command command
+          [FromBody] DTO.Session.CreateSessionCommand commandDTO
         ) {
-            var result = await Mediator.Send(command);
+            var command = new Create.Command(
+                commandDTO.Genres,
+                commandDTO.Name
+            );
             Logger.LogDebug("create session");
+            var result = await Mediator.Send(command);
             return Ok(result);
         }
     }

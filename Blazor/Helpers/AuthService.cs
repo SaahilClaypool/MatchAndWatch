@@ -35,7 +35,7 @@ namespace Blazor.Helpers {
             var loginResult = JsonSerializer.Deserialize<LoginResultDTO>(
                 await response.Content.ReadAsStringAsync(), new JsonSerializerOptions {
                     PropertyNameCaseInsensitive = true
-                });
+                })!;
 
             if (!response.IsSuccessStatusCode) {
                 return loginResult;

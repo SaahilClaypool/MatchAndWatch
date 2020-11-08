@@ -28,13 +28,10 @@ namespace App {
             return await Context.Users.Where(user => user.Id == id).FirstAsync();
         }
 
-        public async Task<IUser> CurrentUser() {
-            var userId = HttpContextAccessor.HttpContext.User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
-            return await Context.Users.FindAsync(userId);
-        }
+        public Task<IUser> CurrentUser() => Task.FromResult((IUser)HttpContextAccessor.HttpContext.Items["User"]);
 
         public string GetCurrentUsername() {
-            return HttpContextAccessor.HttpContext.User?.Claims?.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+            return HttpContextAccessor.HttpContext.User?.Claims?.FirstOrDefault(x => x.Type == "unique_name")?.Value;
         }
     }
 }
