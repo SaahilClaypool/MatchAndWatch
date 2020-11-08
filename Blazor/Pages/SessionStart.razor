@@ -1,4 +1,5 @@
 @page "/session/new"
+@page "/session/{SessionId}/show"
 @attribute [Authorize]
 @using Blazor.Components.Spinner
 
@@ -8,15 +9,18 @@
     @if (FormState == FormStates.GENRES)
     {
         <div>
-            <small>Select the genres that you want to watch</small>
+            <small>Select the genres that you want to watch</small><hr/>
             <Spinner IsLoaded="Genres != null">
-                <input type="text" @bind="Command.Name" />
+                <label for="SessionName">Session name</label>
+                <input id="SessionName" type="text" @bind="Command.Name" />
                 <ul>
                     @foreach (var genre in Genres!)
                     {
                         <li>
                             <input id=@genre type="checkbox"
-                                @onchange="eventArgs => ToggleSelected(genre, (bool)eventArgs.Value)" />
+                                @onchange="eventArgs => ToggleSelected(genre, (bool)eventArgs.Value)" 
+                                checked="@SelectedGenres.Contains(genre)"
+                                />
                             <label for=@genre>@genre</label>
                             <br />
                         </li>

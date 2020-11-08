@@ -4,16 +4,20 @@ using System.Threading.Tasks;
 
 using Core.Interfaces;
 using Core.Models;
+using System.Linq;
 
 using FluentValidation;
 
 using MediatR;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Core.UseCases.Session {
-    public class Create {
+    public class Update {
         public record Command(
-          IEnumerable<string> Genres,
-          string Name
+            string Id,
+            IEnumerable<string> Genres,
+            string Name
         ) : IRequest<Response>;
 
         public record Response(
@@ -30,27 +34,23 @@ namespace Core.UseCases.Session {
         public class Handler : IRequestHandler<Command, Response> {
             private ISessionRepository SessionRepository { get; init; }
             private ICurrentUserAccessor CurrentUserAccessor { get; init; }
+            public ILogger<Handler> Logger { get; }
 
-            public Handler(ISessionRepository sessionRepository, ICurrentUserAccessor currentUserAccessor) {
+            public Handler(ISessionRepository sessionRepository, ICurrentUserAccessor currentUserAccessor, ILogger<Handler> logger) {
                 SessionRepository = sessionRepository;
                 CurrentUserAccessor = currentUserAccessor;
+                Logger = logger;
             }
 
             public async Task<Response> Handle(Command request, CancellationToken cancellationToken) {
                 var user = await CurrentUserAccessor.CurrentUser();
-                Models.Session session = new() {
-                    Creater = user,
-                    Genres = request.Genres,
-                    Name = request.Name,
-                    Participants = new List<ParticipantStatus>() {
-                        new() { 
-                            User = user, 
-                            CurrentState = ParticipantStatus.State.Invited 
-                        }
-                    }
-                };
-                SessionRepository.Add(session);
+                var session = await SessionRepository.Items().Where(session => session.Id == request.Id).FirstAsync(cancellationToken);
+                session.Genres = request.Genres;
+                session.Name = request.Name;
                 await SessionRepository.Save();
+
+                Logger.LogDebug($"saved session with {session.Genres.Count()} genres\n");
+
                 return new(session.Id);
             }
         }

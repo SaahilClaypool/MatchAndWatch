@@ -9,6 +9,7 @@ namespace Core.Models {
         public IUser Creater { get; set; }
         public IEnumerable<ParticipantStatus> Participants { get; set; }
         public IQueryable<Rating> Ratings { get; set; }
+        public string Name { get; set; }
     }
 
     public class ParticipantStatus : Entity {

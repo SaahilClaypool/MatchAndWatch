@@ -14,11 +14,29 @@ namespace Blazor.Pages {
 
         [Inject] private NavigationManager? NavigationManager { get; set; }
 
-        private CreateSessionCommand Command { get; set; } = new() {
-            Genres = new HashSet<string>(),
-            Name = ""
-        };
+        [Parameter] public string? SessionId { get; set; }
 
+
+        private CreateSessionCommand? Command { get; set; }
+
+        protected override async Task OnInitializedAsync() {
+            await base.OnInitializedAsync();
+            var generesTask = Http!.GetFromJsonAsync<List<string>>("api/Genre");
+            if (SessionId is not null) {
+                var session = await Http!.GetFromJsonAsync<SessionDTO>($"api/Session/{SessionId}");
+                Command = new() {
+                    Name = session.Name,
+                    Genres = new HashSet<string>(session.Genres)
+                };
+            }
+
+            // this might be initialized if its from a parameter
+            Command ??= new() {
+                Name = "",
+                Genres = new HashSet<string>()
+            };
+            Genres = await generesTask;
+        }
         enum FormStates {
             GENRES = 0,
             MAX // always last
@@ -26,12 +44,8 @@ namespace Blazor.Pages {
 
         private FormStates FormState { get; set; } = FormStates.GENRES;
 
-        private HashSet<string> SelectedGenres { get => (HashSet<string>)Command.Genres; }
+        private HashSet<string> SelectedGenres { get => (HashSet<string>)Command!.Genres; }
         private IEnumerable<string>? Genres { get; set; }
-
-        protected override async Task OnInitializedAsync() {
-            Genres = await Http!.GetFromJsonAsync<List<string>>("api/Genre");
-        }
 
         private void ToggleSelected(string genre, bool isSelected) {
             if (isSelected) {
@@ -42,28 +56,36 @@ namespace Blazor.Pages {
             }
         }
 
+        private async Task<HttpResponseMessage> CreateOrUpdate() {
+            if(SessionId is null) {
+                return await Http!.PostAsJsonAsync("api/Session", Command);
+            } else {
+                return await Http!.PutAsJsonAsync($"api/Session/{SessionId}", Command);
+            }
+        }
+
         private async Task<bool> Submit() {
-            var response = await Http!.PostAsJsonAsync("api/Session", Command);
+            var response = await CreateOrUpdate();
             if (response.IsSuccessStatusCode) {
-                return true;
+                var validResponse = await response.Content.ReadFromJsonAsync<CreateSessionResponse>();
+                SessionId = validResponse.Id;
+                Complete();
+                return false;
             }
             // TODO: we should add generic error handling here...
             // raise an exception with an error should display the messages at the top or something
             return false;
         }
 
-        private bool Complete() {
-            NavigationManager!.NavigateTo("session/show");
-
-            // we don't really want to increment after this
-            return false;
+        private void Complete() {
+            NavigationManager!.NavigateTo($"session/{SessionId!}/show");
         }
 
         protected string ButtonText {
             get => FormState switch {
-                FormStates.GENRES => "Submit",
+                FormStates.GENRES => SessionId is null ? "Submit" : "Update",
                 FormStates.MAX => "Start",
-                _ => throw new System.NotImplementedException(),
+                _ => throw new NotImplementedException(),
             };
         }
 
@@ -71,8 +93,7 @@ namespace Blazor.Pages {
 
             var success = FormState switch {
                 FormStates.GENRES => await Submit(),
-                FormStates.MAX => Complete(),
-                _ => true
+                _ => throw new NotImplementedException("No such state")
             };
 
 

@@ -14,10 +14,10 @@ using MediatR;
 using System;
 
 namespace Core.UseCases.Session {
-    public class GetOption {
+    public class GetSession {
         public record Command(
             string Id
-        ) : IRequest;
+        ) : IRequest<Models.Session>;
 
         public class CommandValidator : AbstractValidator<Command> {
             public CommandValidator(ISessionRepository sessionRepository) {
@@ -27,16 +27,16 @@ namespace Core.UseCases.Session {
             }
         }
 
-        public class Handler : IRequestHandler<Command> {
+        public class Handler : IRequestHandler<Command, Models.Session> {
             private ISessionRepository SessionRepository { get; init; }
 
             public Handler(ISessionRepository sessionRepository) {
                 SessionRepository = sessionRepository;
             }
 
-            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken) {
-                var session = SessionRepository.ItemsNoTracking().Where(session => session.Id == request.Id);
-                throw new NotImplementedException();
+            public async Task<Models.Session> Handle(Command request, CancellationToken cancellationToken) {
+                var session = await SessionRepository.ItemsNoTracking().Where(session => session.Id == request.Id).FirstAsync(cancellationToken);
+                return session;
             }
         }
     }
