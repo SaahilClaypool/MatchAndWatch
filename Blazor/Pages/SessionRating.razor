@@ -9,6 +9,14 @@
     </div>
     <div class="ScrollableContent">
         <div class="MoviePoster">
+            @if (PosterPath is not null)
+            {
+                <img src=@PosterPath alt="Poster" />
+            }
+            else
+            {
+                <img src="https://via.placeholder.com/150" alt="Loading" />
+            }
         </div>
         <div class="Information">
             <div class="Ratings">
@@ -18,7 +26,7 @@
                 @foreach (var _item in Enumerable.Range(0, 1000))
                 {
                     <p>
-                        Lorem Epsum   
+                        Lorem Epsum
                     </p>
                 }
             </div>
@@ -31,8 +39,3 @@
         <button>Up</button>
     </div>
 </div>
-
-@code {
-    [Parameter] public string SessionId { get; set; }
-    [Parameter] public string RatingId { get; set; }
-}

@@ -8,6 +8,12 @@
     height: 95vh;
     width: 100%;
     overflow-y: scroll;
+    background-color: #555555;
+    color: #ffffff;
+}
+
+.ScrollableContent .MoviePoster img {
+    width: 100%;
 }
 
 .Controls {
