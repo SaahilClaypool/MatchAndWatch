@@ -14,7 +14,7 @@ namespace Blazor.Pages {
 
         [Inject] private NavigationManager? NavigationManager { get; set; }
 
-        [Parameter] public string? SessionId { get; set; }
+        [Parameter] public string SessionId { get; set; }
 
 
         private CreateSessionCommand? Command { get; set; }
@@ -101,5 +101,8 @@ namespace Blazor.Pages {
                 FormState += 1;
             }
         }
+
+        private bool ShowStart() => SessionId is not null;
+        private void Start() => NavigationManager!.NavigateTo("/session/{SessionId}/rating/new");
     }
 }

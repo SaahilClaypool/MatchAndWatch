@@ -1,0 +1,34 @@
+@page "/session/{SessionId}/rating/new"
+@page "/session/{SessionId}/rating/{RatingId}/show"
+@attribute [Authorize]
+@using Blazor.Components.Spinner
+
+<div class="SessionRating">
+    <div class="ScrollableContent">
+        <div class="TopBar">
+            Movie Title (fixed to top)
+        </div>
+        <div class="MoviePoster">
+        </div>
+        <div class="Information">
+            <div class="Ratings">
+                IMDB ratings etc
+            </div>
+            <div class="Summary">
+                Lorem Epsum
+            </div>
+        </div>
+    </div>
+
+    <div class="Controls">
+        Fixed to the bottom
+        <button>Down</button>
+        <button>Pass</button>
+        <button>Up</button>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string SessionId { get; set; }
+    [Parameter] public string RatingId { get; set; }
+}

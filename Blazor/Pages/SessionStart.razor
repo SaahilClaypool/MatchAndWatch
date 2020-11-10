@@ -9,7 +9,8 @@
     @if (FormState == FormStates.GENRES)
     {
         <div>
-            <small>Select the genres that you want to watch</small><hr/>
+            <small>Select the genres that you want to watch</small>
+            <hr />
             <Spinner IsLoaded="Genres != null">
                 <label for="SessionName">Session name</label>
                 <input id="SessionName" type="text" @bind="Command.Name" />
@@ -18,9 +19,8 @@
                     {
                         <li>
                             <input id=@genre type="checkbox"
-                                @onchange="eventArgs => ToggleSelected(genre, (bool)eventArgs.Value)" 
-                                checked="@SelectedGenres.Contains(genre)"
-                                />
+                                @onchange="eventArgs => ToggleSelected(genre, (bool)eventArgs.Value)"
+                                checked="@SelectedGenres.Contains(genre)" />
                             <label for=@genre>@genre</label>
                             <br />
                         </li>
@@ -35,7 +35,14 @@
             Complete
         </div>
     }
-    <button @onclick="async () => await Next()">
-        @ButtonText
-    </button>
+    <div class="Controls">
+        <button @onclick="async () => await Next()">
+            @ButtonText
+        </button>
+        @if(ShowStart()) {
+            <button @onclick="Start">
+                Start
+            </button>
+        }
+    </div>
 </div>
