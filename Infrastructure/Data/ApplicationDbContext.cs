@@ -52,11 +52,12 @@ namespace Infrastructure.Data {
                         e.State == EntityState.Added
                         || e.State == EntityState.Modified));
 
+            var now = DateTime.Now;
             foreach (var entityEntry in entries) {
-                ((BaseEntity)entityEntry.Entity).UpdatedDate = DateTime.Now;
+                ((BaseEntity)entityEntry.Entity).UpdatedDate = now;
 
                 if (entityEntry.State == EntityState.Added) {
-                    ((BaseEntity)entityEntry.Entity).CreatedDate = DateTime.Now;
+                    ((BaseEntity)entityEntry.Entity).CreatedDate = now;
                 }
             }
 

@@ -4,10 +4,10 @@
 @using Blazor.Components.Spinner
 
 <div class="SessionRating">
+    <div class="TopBar">
+        Movie Title (fixed to top)
+    </div>
     <div class="ScrollableContent">
-        <div class="TopBar">
-            Movie Title (fixed to top)
-        </div>
         <div class="MoviePoster">
         </div>
         <div class="Information">
@@ -15,13 +15,17 @@
                 IMDB ratings etc
             </div>
             <div class="Summary">
-                Lorem Epsum
+                @foreach (var _item in Enumerable.Range(0, 1000))
+                {
+                    <p>
+                        Lorem Epsum   
+                    </p>
+                }
             </div>
         </div>
     </div>
 
     <div class="Controls">
-        Fixed to the bottom
         <button>Down</button>
         <button>Pass</button>
         <button>Up</button>

@@ -103,6 +103,6 @@ namespace Blazor.Pages {
         }
 
         private bool ShowStart() => SessionId is not null;
-        private void Start() => NavigationManager!.NavigateTo("/session/{SessionId}/rating/new");
+        private void Start() => NavigationManager!.NavigateTo($"/session/{SessionId}/rating/new");
     }
 }

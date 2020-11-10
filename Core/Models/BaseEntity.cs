@@ -8,6 +8,6 @@ namespace Core.Models {
     }
     public abstract class Entity : BaseEntity {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string Id { get; set; }
+        public string? Id { get; set; }
     }
 }
