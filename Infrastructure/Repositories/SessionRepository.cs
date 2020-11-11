@@ -2,6 +2,7 @@ using System.Linq;
 
 using Core.Interfaces;
 using Core.Models;
+using Microsoft.EntityFrameworkCore;
 
 using Infrastructure.Data;
 
@@ -12,5 +13,7 @@ namespace Infrastructure.Repositories {
         }
 
         public override IQueryable<Session> Items() => Context.Sessions.AsQueryable();
+
+        public IQueryable<Rating> Ratings() => Context.Set<Rating>().AsNoTracking().AsQueryable();
     }
 }

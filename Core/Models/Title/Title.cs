@@ -2,8 +2,7 @@ using System.Collections.Generic;
 /// https://www.imdb.com/interfaces/
 namespace Core.Models.Title {
     /// Pull from TitleBasics
-    public class Title {
-        public string Id { get; set; }
+    public class Title : Entity {
         public string Type { get; set; }
         public string Name { get; set; }
         public int? ReleaseYear { get; set; }

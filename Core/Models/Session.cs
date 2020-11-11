@@ -8,7 +8,7 @@ namespace Core.Models {
         public IEnumerable<string> Genres { get; set; } = new List<string>();
         public IUser Creater { get; set; }
         public IEnumerable<ParticipantStatus> Participants { get; set; }
-        public IQueryable<Rating> Ratings { get; set; }
+        public IEnumerable<Rating> Ratings { get; set; }
         public string Name { get; set; }
     }
 

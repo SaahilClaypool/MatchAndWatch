@@ -1,15 +1,17 @@
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 using Core.Interfaces;
+using Core.Models;
 
 using Infrastructure.Data;
 
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories {
-    public abstract class BaseRepository<T> : IBaseRepository<T> where T : class {
+    public abstract class BaseRepository<T> : IBaseRepository<T> where T : Entity {
         protected ApplicationDbContext Context { get; set; }
         public BaseRepository(ApplicationDbContext context) {
             Context = context;
@@ -34,6 +36,10 @@ namespace Infrastructure.Repositories {
 
         public virtual Task Save(CancellationToken token) {
             return Context.SaveChangesAsync(token);
+        }
+
+        public virtual Task<T> Find(string Id) {
+            return Items().FirstAsync(item => item.Id == Id);
         }
     }
 }

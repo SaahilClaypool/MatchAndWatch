@@ -26,7 +26,7 @@ namespace Blazor.Pages {
             InformationQuery = new() {
                 SessionId = SessionId
             };
-            // MovieInfo = await Http!.GetFromJsonAsync<MovieInformationResponseDTO>($"api/Session/{SessionId!}/Rating/");
+            MovieInfo = await Http!.GetFromJsonAsync<MovieInformationResponseDTO>($"api/Session/{SessionId!}/Rating/");
         }
     }
 }

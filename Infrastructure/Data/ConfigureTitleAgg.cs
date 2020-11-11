@@ -43,6 +43,11 @@ namespace Infrastructure.Data {
                 .HasOne(participantStatus => (ApplicationUser)participantStatus.User)
                 .WithMany();
             modelBuilder
+                .Entity<Session>()
+                .HasMany(session => session.Ratings)
+                .WithOne(rating => rating.Session)
+                .HasForeignKey(rating => rating.SessionId);
+            modelBuilder
               .Entity<Session>()
               .Property(e => e.Id)
               .ValueGeneratedOnAdd();
