@@ -61,6 +61,11 @@ namespace Core.UseCases.Rating {
                 }
 
                 public async Task<Response> Handle(Command request, CancellationToken cancellationToken) {
+                    // ignore undecided ones for now (they could pop again later...)
+                    if(request.Score == ScoreType.UNDECIDED) {
+                        return new();
+                    }
+
                     var user = await CurrentUserAccessor.CurrentUser();
                     var rating = new Models.Rating() {
                         User = user,

@@ -18,7 +18,7 @@ namespace Blazor.Pages {
 
         [Parameter] public string? SessionId { get; set; }
         [Parameter] public string? RatingId { get; set; }
-        private string PosterPath { get; set; } = "https://image.tmdb.org/t/p/w500/wwemzKWzjKYJFfCeiB57q3r4Bcm.png";
+        private string? PosterPath { get; set; } = null;
 
         private bool loading = true; 
 
@@ -39,9 +39,7 @@ namespace Blazor.Pages {
                 SessionId = SessionId
             };
             MovieInfo = await Http!.GetFromJsonAsync<MovieInformationResponseDTO>($"api/Session/{SessionId!}/Rating/");
-            if (MovieInfo?.PosterPartialPath is string poster) {
-                PosterPath = poster;
-            }
+            PosterPath = MovieInfo?.PosterPartialPath;
             loading = false;
         }
 
