@@ -1,24 +1,38 @@
 .SessionRating {
     position: relative;
-    height: 100vh;
     background-color: #555555;
     color: #ffffff;
+    margin: 0px;
 }
 .ScrollableContent {
     display: grid;
     grid-template-rows: auto 1fr;
-    height: 95vh;
+    max-height: 90vh;
     width: 100%;
     overflow-y: scroll;
+    justify-content: center;
+    margin: 0px;
 }
 
 .ScrollableContent .MoviePoster img {
-    width: 100%;
+    max-width: 100%;
+    min-height: 80vh;
 }
 
-.Controls {
-    position: absolute;
-    height: 3em;
+.ScrollableContent .MoviePoster {
+    display: grid;
+    place-items: center;
+}
+
+.Information {
+    display: grid;
+    place-items: center;
+    max-width: 80ch;
+}
+
+.Controls .Container {
+    max-width: 80ch;
+    max-height: 10vh;
     bottom: 0;
     display: flex;
     flex-direction: row;
@@ -26,9 +40,16 @@
     width: 100%;
 }
 
+.Controls {
+    display: grid;
+    place-items: center;
+}
+
 .Controls button {
     width: 10ch;
+    margin: 0px;
 }
 .TopBar {
+    margin: 0px;
     text-align: center;
 }

@@ -35,13 +35,19 @@ A dating-app inspired movie / show finder.
 
 ## Doing
 
+- [ ] Postgres database
+- [ ] Use appsettings for keys and such
+- [ ] summary & ratings
+
+### Done
+
 - [x] Ingest basic movie data
 - [x] Set up data structure
 - [x] Add fluent validation
 - [x] Add test project
 - [x] Add mediatR
 - [x] Add swagger auto docs
-- [ ] core app logic
+- [x] core app logic
 
 ## Possible features
 

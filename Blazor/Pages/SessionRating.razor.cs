@@ -12,20 +12,22 @@ using Microsoft.AspNetCore.Components;
 namespace Blazor.Pages {
     public partial class SessionRating {
         [Inject] private HttpClient? Http { get; set; }
-        [Inject] private NavigationManager? NavigationManager { get; set; }
+        [Inject] public NavigationManager? NavigationManager { get; set; }
 
         [Parameter] public string? SessionId { get; set; }
         [Parameter] public string? RatingId { get; set; }
         private string PosterPath { get; set; } = "https://image.tmdb.org/t/p/w500/wwemzKWzjKYJFfCeiB57q3r4Bcm.png";
 
-        private MovieInformationQueryDTO? InformationQuery { get; set; }
+        public MovieInformationQueryDTO? informationQuery;
+
         private MovieInformationResponseDTO? MovieInfo { get; set; }
 
         private string MovieTitle => MovieInfo?.MovieTitle ?? "Loading...";
+        private string MovieSummary => MovieInfo?.MovieSummary ?? "Loading...";
         
         protected override async Task OnInitializedAsync() {
             await base.OnInitializedAsync();
-            InformationQuery = new() {
+            informationQuery = new() {
                 SessionId = SessionId
             };
             MovieInfo = await Http!.GetFromJsonAsync<MovieInformationResponseDTO>($"api/Session/{SessionId!}/Rating/");
