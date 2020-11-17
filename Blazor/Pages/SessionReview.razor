@@ -1,0 +1,33 @@
+@page "/session/{SessionId}/review"
+@attribute [Authorize]
+@using Blazor.Components.Spinner
+
+<div>
+    <div>
+        <Spinner IsLoaded="Session != null">
+            @Session.Name
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Movie</th>
+                        <th scope="col">User</th>
+                        <th scope="col">Rating</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var rating in Session.Ratings)
+                        {
+                            <tr>
+                                <th scope="row"></th>
+                                <td>@rating.MovieTitle</td>
+                                <td>@rating.UserName</td>
+                                <td>@rating.Type</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </Spinner>
+        </div>
+    </div>

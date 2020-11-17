@@ -50,13 +50,13 @@ namespace App.Controllers {
         [HttpPost]
         public async Task<ActionResult<CreateRatingResponseDTO>> Create(
             [FromRoute] string SessionId,
-            [FromBody] CreateRatingDTO command
+            [FromBody] RatingDTO command
         ) {
             Logger.LogDebug($"creating new");
             var score = command.Type switch {
-                CreateRatingDTO.Downvote => Core.Models.Rating.ScoreType.DOWN,
-                CreateRatingDTO.Upvote => Core.Models.Rating.ScoreType.UP,
-                CreateRatingDTO.Pass => Core.Models.Rating.ScoreType.UNDECIDED,
+                RatingDTO.Downvote => Core.Models.Rating.ScoreType.DOWN,
+                RatingDTO.Upvote => Core.Models.Rating.ScoreType.UP,
+                RatingDTO.Pass => Core.Models.Rating.ScoreType.UNDECIDED,
                 _ => throw new NotImplementedException("Unknown action")
             };
             var response = await Mediator.Send(new CreateRating.Command(SessionId, command.MovieId, score));

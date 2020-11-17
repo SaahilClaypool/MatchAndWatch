@@ -17,7 +17,9 @@ namespace Core.UseCases.Session {
     public class GetSession {
         public record Command(
             string Id
-        ) : IRequest<Models.Session>;
+        ) : IRequest<Models.Session> {
+            public bool IncludeRatings { get; init; } = false;
+        };
 
         public class CommandValidator : AbstractValidator<Command> {
             public CommandValidator(ISessionRepository sessionRepository) {
@@ -35,7 +37,17 @@ namespace Core.UseCases.Session {
             }
 
             public async Task<Models.Session> Handle(Command request, CancellationToken cancellationToken) {
-                var session = await SessionRepository.ItemsNoTracking().Where(session => session.Id == request.Id).FirstAsync(cancellationToken);
+                var items = SessionRepository
+                    .ItemsNoTracking()
+                    .Where(session => session.Id == request.Id);
+                if (request.IncludeRatings) {
+                    items = items.Include(session => session.Ratings)
+                                .ThenInclude(rating => rating.Title);
+                    items = items.Include(session => session.Ratings)
+                                .ThenInclude(rating => rating.User);
+                }
+                var session = await items.FirstAsync(cancellationToken);
+
                 return session;
             }
         }

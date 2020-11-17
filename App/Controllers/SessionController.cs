@@ -5,7 +5,10 @@ using System.Threading.Tasks;
 
 using Core.UseCases.Session;
 
+using DTO.Rating;
 using DTO.Session;
+
+using Extensions;
 
 using MediatR;
 
@@ -43,6 +46,20 @@ namespace App.Controllers {
             return Ok(new SessionDTO() { Id = result.Id, Genres = result.Genres, Name = result.Name });
         }
 
+        [HttpGet("{id}/full")]
+        public async Task<ActionResult<FullSessionDTO>> Full(
+            [FromRoute] string id
+        ) {
+            Logger.LogDebug($"fetch session full with id {id}");
+            var result = await Mediator.Send(new GetSession.Command(id) { IncludeRatings = true });
+            return Ok(new FullSessionDTO() {
+                Id = result.Id,
+                Genres = result.Genres,
+                Name = result.Name,
+                Ratings = result.Ratings.Select(rating => ToDTO(rating))
+            });
+        }
+
         [HttpPut("{id}")]
         public async Task<ActionResult<CreateSessionResponse>> Update(
         [FromBody] CreateSessionCommand commandDTO,
@@ -70,5 +87,26 @@ namespace App.Controllers {
             var result = await Mediator.Send(command);
             return Ok(result);
         }
+
+
+        // TODO: Move to helpers
+
+        private static RatingDTO ToDTO(Core.Models.Rating rating) {
+            return new RatingDTO() {
+                MovieTitle = rating.Title.Name,
+                MovieId = rating.Title.Id,
+                UserId = rating.UserId,
+                UserName = rating.User.UserName,
+                Type = ScoreToDTO(rating.Score)
+            };
+        }
+
+        private static string ScoreToDTO(Core.Models.Rating.ScoreType score) =>
+            score switch {
+                Core.Models.Rating.ScoreType.DOWN => RatingDTO.Downvote,
+                Core.Models.Rating.ScoreType.UP => RatingDTO.Upvote,
+                Core.Models.Rating.ScoreType.UNDECIDED => RatingDTO.Pass,
+                _ => throw new NotImplementedException("Can't map score to dto")
+            };
     }
 }

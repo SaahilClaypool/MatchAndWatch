@@ -44,15 +44,15 @@ namespace Blazor.Pages {
         }
 
         protected async Task OnUpvote() {
-            await HandleCommand(CreateRatingDTO.Upvote);
+            await HandleCommand(RatingDTO.Upvote);
         }
 
         protected async Task OnDownvote() {
-            await HandleCommand(CreateRatingDTO.Downvote);
+            await HandleCommand(RatingDTO.Downvote);
         }
 
         protected async Task OnPass() {
-            await HandleCommand(CreateRatingDTO.Pass);
+            await HandleCommand(RatingDTO.Pass);
         }
 
         private async Task HandleCommand(string type) {
@@ -60,7 +60,7 @@ namespace Blazor.Pages {
                 return;
             }
 
-            var createCommand = new CreateRatingDTO() { 
+            var createCommand = new RatingDTO() { 
                 Type = type,
                 MovieId = MovieInfo!.MovieId
             } ;

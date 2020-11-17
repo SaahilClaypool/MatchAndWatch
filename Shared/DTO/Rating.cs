@@ -10,12 +10,15 @@ namespace DTO.Rating {
         public string PosterPartialPath { get; set; }
     }
 
-    public class CreateRatingDTO {
+    public class RatingDTO {
         public const string Upvote = "Upvote";
         public const string Downvote = "Downvote";
         public const string Pass = "Pass";
         public string Type { get; set; }
         public string MovieId { get; set; }
+        public string? MovieTitle { get; set; }
+        public string? UserId { get; set; }
+        public string? UserName { get; set; }
     }
 
     public class CreateRatingResponseDTO {
