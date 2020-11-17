@@ -20,5 +20,10 @@ namespace Tmdb.Services {
                 _ => GenericImage
             };
         }
+
+        public async Task<string> Summary(string titleId) {
+            var details = await Client.Details(titleId);
+            return details.Overview ?? "";
+        }
     }
 }

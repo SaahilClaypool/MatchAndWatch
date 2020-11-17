@@ -38,11 +38,13 @@ namespace App.Controllers {
             Logger.LogDebug($"fetching new");
             var movie = await Mediator.Send(new NewRating.Command(SessionId));
             var poster = await movieMeta.PosterPath(movie.MovieId);
+            var summary = await movieMeta.Summary(movie.MovieId);
             // TODO: get poster from API
             return Ok(new MovieInformationResponseDTO() {
                 MovieId = movie.MovieId,
                 MovieTitle = movie.MovieTitle,
-                PosterPartialPath = poster
+                PosterPartialPath = poster,
+                MovieSummary = summary
             });
         }
     }

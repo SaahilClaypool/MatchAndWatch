@@ -8,9 +8,12 @@ using Core.Models.Title;
 
 using Extensions;
 
+using Microsoft.Extensions.Caching.Memory;
+
 namespace Tmdb.Api {
     public class MovieClient {
         private TmdbClient Client { get; }
+        public IMemoryCache? Cache { get; set; }
         public MovieClient(TmdbClient client) {
             Client = client;
         }
@@ -59,6 +62,9 @@ namespace Tmdb.Api {
 
         [JsonPropertyName("release_date")]
         public string? ReleaseDate { get; set; }
+
+        [JsonPropertyName("overview")]
+        public string? Overview { get; set; }
 
         public int? Year() {
             try {
