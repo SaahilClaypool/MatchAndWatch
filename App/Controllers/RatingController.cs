@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
+using Tmdb.Services;
+
 namespace App.Controllers {
     [Authorize]
     [ApiController]
@@ -30,14 +32,17 @@ namespace App.Controllers {
 
         [HttpGet]
         public async Task<ActionResult<MovieInformationResponseDTO>> Get(
-            [FromRoute] string SessionId
+            [FromRoute] string SessionId,
+            [FromServices] MovieMeta movieMeta
         ) {
             Logger.LogDebug($"fetching new");
-            var result = await Mediator.Send(new NewRating.Command(SessionId));
+            var movie = await Mediator.Send(new NewRating.Command(SessionId));
+            var poster = await movieMeta.PosterPath(movie.MovieId);
             // TODO: get poster from API
             return Ok(new MovieInformationResponseDTO() {
-                MovieId = result.MovieId,
-                MovieTitle = result.MovieTitle
+                MovieId = movie.MovieId,
+                MovieTitle = movie.MovieTitle,
+                PosterPartialPath = poster
             });
         }
     }

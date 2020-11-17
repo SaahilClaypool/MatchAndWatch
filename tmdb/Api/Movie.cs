@@ -15,10 +15,14 @@ namespace Tmdb.Api {
             Client = client;
         }
 
-        public async Task<Title> Details(string id) {
+        public async Task<MovieDetails> Details(string id) {
             var path = $"movie/{id}";
             var details = await Client.MakeRequest<MovieDetails>(path);
-            return details.ToTitle();
+            return details;
+        }
+
+        public async Task<Title> Title(string id) {
+            return (await Details(id)).ToTitle();
         }
     }
 
@@ -49,6 +53,9 @@ namespace Tmdb.Api {
 
         [JsonPropertyName("original_language")]
         public string? OriginalLanguage { get; set; }
+
+        [JsonPropertyName("poster_path")]
+        public string? PosterPath { get; set; }
 
         [JsonPropertyName("release_date")]
         public string? ReleaseDate { get; set; }

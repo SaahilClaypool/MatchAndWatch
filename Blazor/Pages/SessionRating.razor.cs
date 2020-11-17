@@ -21,13 +21,17 @@ namespace Blazor.Pages {
         private MovieInformationQueryDTO? InformationQuery { get; set; }
         private MovieInformationResponseDTO? MovieInfo { get; set; }
 
-
+        private string MovieTitle => MovieInfo?.MovieTitle ?? "Loading...";
+        
         protected override async Task OnInitializedAsync() {
             await base.OnInitializedAsync();
             InformationQuery = new() {
                 SessionId = SessionId
             };
             MovieInfo = await Http!.GetFromJsonAsync<MovieInformationResponseDTO>($"api/Session/{SessionId!}/Rating/");
+            if (MovieInfo?.PosterPartialPath is string poster) {
+                PosterPath = poster;
+            }
         }
     }
 }

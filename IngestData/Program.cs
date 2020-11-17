@@ -6,7 +6,7 @@ using Infrastructure;
 
 using IngestData.Tmdb;
 
-using tmdb.StaticData;
+using Tmdb.StaticData;
 
 using Tmdb.Api;
 

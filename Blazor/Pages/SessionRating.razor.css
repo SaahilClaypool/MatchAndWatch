@@ -1,6 +1,8 @@
 .SessionRating {
     position: relative;
     height: 100vh;
+    background-color: #555555;
+    color: #ffffff;
 }
 .ScrollableContent {
     display: grid;
@@ -8,8 +10,6 @@
     height: 95vh;
     width: 100%;
     overflow-y: scroll;
-    background-color: #555555;
-    color: #ffffff;
 }
 
 .ScrollableContent .MoviePoster img {
@@ -28,4 +28,7 @@
 
 .Controls button {
     width: 10ch;
+}
+.TopBar {
+    text-align: center;
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -31,7 +32,8 @@ namespace Core.Services.Session {
             Logger.LogDebug($"Trying to get next rating title for {CurrentUserId} and session {Session.Name}");
             var viableTitles = TitleRepository.TitleGenres()
                 .Where(genre => Session.Genres.Contains(genre.Name))
-                .Select(genre => genre.Title);
+                .Select(genre => genre.Title)
+                .OrderByDescending(title => title.RatingCount);
 
             var ratings = SessionRepository.Ratings().Where(rating => rating.SessionId == Session.Id);
 
@@ -47,8 +49,15 @@ namespace Core.Services.Session {
                 .Where(title => !ratedByCurrentUser.ToList().Contains(title.Id!));
 
 
-            return await ratedByOthers.Concat(notRatedByCurrentUser).FirstOrDefaultAsync();
-
+            Random rnd = new Random();
+            var bestOptions = await ratedByOthers
+                    .Concat(notRatedByCurrentUser)
+                    .OrderByDescending(title => title.RatingCount)
+                    .Take(10)
+                    .ToListAsync();
+            return bestOptions
+                    .OrderBy(t => rnd.Next())
+                    .First();
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 using Extensions;
 
-namespace tmdb.StaticData {
+namespace Tmdb.StaticData {
     public class MovieReader {
         public string File { get; set; }
 

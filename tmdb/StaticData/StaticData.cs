@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace tmdb.StaticData {
+namespace Tmdb.StaticData {
     public class StaticData {
         DateTime DateTime { get; set; }
         public string DateString => string.Format("{0:MM_dd_yyyy}", DateTime);

@@ -5,7 +5,7 @@ using Core.Models.Title;
 
 using Extensions;
 
-using tmdb.StaticData;
+using Tmdb.StaticData;
 
 namespace Tmdb.Api {
     public class MoviePopulator {
@@ -20,7 +20,7 @@ namespace Tmdb.Api {
             var reader = new MovieReader(Path);
 
             foreach (var record in reader.GetRecords()) {
-                yield return Client.Details(record.Id.ToString());
+                yield return Client.Title(record.Id.ToString());
             }
         }
     }

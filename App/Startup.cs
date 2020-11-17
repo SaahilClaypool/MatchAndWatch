@@ -28,6 +28,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 
+using Tmdb.Api;
+using Tmdb.Services;
+
 namespace App {
     public class Startup {
         public Startup(IConfiguration configuration) {
@@ -50,6 +53,11 @@ namespace App {
             services.AddScoped<IGenreRepository, GenreRepository>();
             services.AddScoped<ITitleRepository, TitleRepository>();
             services.AddScoped<ICurrentUserAccessor, CurrentUserAccessor>();
+            services.AddSingleton(_ => TmdbClient.Default());
+            services.AddSingleton<MovieClient>();
+            services.AddSingleton<MovieMeta>();
+
+
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddIdentity<ApplicationUser, IdentityRole>(options => {
                 options.User.RequireUniqueEmail = false;
