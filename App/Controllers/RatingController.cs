@@ -39,13 +39,28 @@ namespace App.Controllers {
             var movie = await Mediator.Send(new NewRating.Command(SessionId));
             var poster = await movieMeta.PosterPath(movie.MovieId);
             var summary = await movieMeta.Summary(movie.MovieId);
-            // TODO: get poster from API
             return Ok(new MovieInformationResponseDTO() {
                 MovieId = movie.MovieId,
                 MovieTitle = movie.MovieTitle,
                 PosterPartialPath = poster,
                 MovieSummary = summary
             });
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<CreateRatingResponseDTO>> Create(
+            [FromRoute] string SessionId,
+            [FromBody] CreateRatingDTO command
+        ) {
+            Logger.LogDebug($"creating new");
+            var score = command.Type switch {
+                CreateRatingDTO.Downvote => Core.Models.Rating.ScoreType.DOWN,
+                CreateRatingDTO.Upvote => Core.Models.Rating.ScoreType.UP,
+                CreateRatingDTO.Pass => Core.Models.Rating.ScoreType.UNDECIDED,
+                _ => throw new NotImplementedException("Unknown action")
+            };
+            var response = await Mediator.Send(new CreateRating.Command(SessionId, command.MovieId, score));
+            return Ok(response);
         }
     }
 }

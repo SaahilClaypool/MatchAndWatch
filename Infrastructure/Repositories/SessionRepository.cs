@@ -16,5 +16,8 @@ namespace Infrastructure.Repositories {
         public override IQueryable<Session> Items() => Context.Sessions.AsQueryable();
 
         public IQueryable<Rating> Ratings() => Context.Set<Rating>().AsNoTracking().AsQueryable();
+        public void AddRating(Rating rating) {
+            Context.Add(rating);
+        }
     }
 }
