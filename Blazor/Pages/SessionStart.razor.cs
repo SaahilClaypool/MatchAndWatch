@@ -1,12 +1,13 @@
-using Microsoft.AspNetCore.Components;
-
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using System.Linq;
-using System;
+
 using DTO.Session;
+
+using Microsoft.AspNetCore.Components;
 
 namespace Blazor.Pages {
     public partial class SessionStart {
@@ -57,9 +58,10 @@ namespace Blazor.Pages {
         }
 
         private async Task<HttpResponseMessage> CreateOrUpdate() {
-            if(SessionId is null) {
+            if (SessionId is null) {
                 return await Http!.PostAsJsonAsync("api/Session", Command);
-            } else {
+            }
+            else {
                 return await Http!.PutAsJsonAsync($"api/Session/{SessionId}", Command);
             }
         }
@@ -82,7 +84,8 @@ namespace Blazor.Pages {
         }
 
         protected string ButtonText {
-            get => FormState switch {
+            get => FormState switch
+            {
                 FormStates.GENRES => SessionId is null ? "Submit" : "Update",
                 FormStates.MAX => "Start",
                 _ => throw new NotImplementedException(),
@@ -91,7 +94,8 @@ namespace Blazor.Pages {
 
         private async Task Next() {
 
-            var success = FormState switch {
+            var success = FormState switch
+            {
                 FormStates.GENRES => await Submit(),
                 _ => throw new NotImplementedException("No such state")
             };

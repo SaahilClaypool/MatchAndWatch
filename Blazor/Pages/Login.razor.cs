@@ -1,10 +1,10 @@
-using Microsoft.AspNetCore.Components;
-
 using System.Threading.Tasks;
 
 using Blazor.Helpers;
 
 using DTO.Login;
+
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 
 namespace Blazor.Pages {

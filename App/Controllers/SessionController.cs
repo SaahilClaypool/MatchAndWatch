@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 
 using Core.UseCases.Session;
 
+using DTO.Session;
+
 using MediatR;
 
 using Microsoft.AspNetCore.Http;
-using DTO.Session;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 

@@ -11,6 +11,6 @@ namespace DTO.Rating {
     }
 
     public class CreateRatingDTO {
-        
+
     }
 }

@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using Core.Interfaces;
 using Core.UseCases.Genre;
 
-using Infrastructure;
-
 using MediatR;
 
 using Microsoft.AspNetCore.Mvc;

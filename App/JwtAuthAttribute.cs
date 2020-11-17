@@ -1,10 +1,10 @@
+using System;
+
 using Infrastructure.Models;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-
-using System;
 
 namespace App {
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]

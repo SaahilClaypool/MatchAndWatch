@@ -1,17 +1,17 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
 using Core.Interfaces;
 using Core.Models;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-
 
 using FluentValidation;
 
 using MediatR;
-using System;
+
+using Microsoft.EntityFrameworkCore;
 
 namespace Core.UseCases.Session {
     public class GetSession {

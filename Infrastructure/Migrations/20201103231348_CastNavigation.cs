@@ -1,16 +1,13 @@
 ﻿using System;
+
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Infrastructure.Migrations
-{
-    public partial class CastNavigation : Migration
-    {
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
+namespace Infrastructure.Migrations {
+    public partial class CastNavigation : Migration {
+        protected override void Up(MigrationBuilder migrationBuilder) {
             migrationBuilder.CreateTable(
                 name: "Rating",
-                columns: table => new
-                {
+                columns: table => new {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "TEXT", nullable: false),
@@ -19,8 +16,7 @@ namespace Infrastructure.Migrations
                     TitleId = table.Column<string>(type: "TEXT", nullable: false),
                     Score = table.Column<int>(type: "INTEGER", nullable: false)
                 },
-                constraints: table =>
-                {
+                constraints: table => {
                     table.PrimaryKey("PK_Rating", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Rating_AspNetUsers_UserId",
@@ -63,8 +59,7 @@ namespace Infrastructure.Migrations
                 column: "UserId");
         }
 
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
+        protected override void Down(MigrationBuilder migrationBuilder) {
             migrationBuilder.DropTable(
                 name: "Rating");
 

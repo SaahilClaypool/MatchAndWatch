@@ -43,9 +43,9 @@ namespace Core.UseCases.Session {
                     Genres = request.Genres,
                     Name = request.Name,
                     Participants = new List<ParticipantStatus>() {
-                        new() { 
-                            User = user, 
-                            CurrentState = ParticipantStatus.State.Invited 
+                        new() {
+                            User = user,
+                            CurrentState = ParticipantStatus.State.Invited
                         }
                     }
                 };

@@ -1,13 +1,15 @@
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
 using Core;
 using Core.Interfaces;
 using Core.Models.Title;
 
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Extensions;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Infrastructure;
 
 namespace Core.Services.Session {
     class SessionManager {

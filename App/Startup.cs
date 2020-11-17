@@ -58,17 +58,16 @@ namespace App {
                 .AddDefaultTokenProviders();
 
             // https://docs.microsoft.com/en-us/aspnet/core/web-api/handle-errors?view=aspnetcore-3.1
-            services.AddControllersWithViews(options => options.Filters.Add(new ValidationErrorHandler()))
-            ;
+            services.AddControllersWithViews(options => {
+                options.Filters.Add(new ValidationErrorHandler());
+                options.Filters.Add(new NotificationHandler());
+            });
             services.AddRazorPages();
 
             services.AddMediatR(typeof(Core.UseCases.Session.Create));
             AssemblyScanner.FindValidatorsInAssembly(typeof(Core.UseCases.Session.Create).Assembly)
               .ForEach(item => services.AddScoped(item.InterfaceType, item.ValidatorType));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehavior<,>));
-            // For all the validators, register them with dependency injection as scoped
-
-
 
             _ = services.AddSwaggerGen(c => {
                 c.SwaggerDoc("v1", new OpenApiInfo {
@@ -82,18 +81,16 @@ namespace App {
                     Type = SecuritySchemeType.ApiKey
                 });
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement {
-         {
-          new OpenApiSecurityScheme
-          {
-            Reference = new OpenApiReference
-            {
-              Type = ReferenceType.SecurityScheme,
-              Id = "Bearer"
-            }
-            },
-            System.Array.Empty<string>()
-          }
-        });
+                    {
+                        new OpenApiSecurityScheme {
+                            Reference = new OpenApiReference {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        Array.Empty<string>()
+                    }
+                });
             });
         }
 
@@ -101,7 +98,6 @@ namespace App {
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
                 // Enable middleware to serve generated Swagger as a JSON endpoint.
                 app.UseSwagger();
 

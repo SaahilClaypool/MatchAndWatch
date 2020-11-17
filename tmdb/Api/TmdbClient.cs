@@ -3,7 +3,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-using Infrastructure;
+using Extensions;
 
 namespace Tmdb.Api {
     public class TmdbClient {

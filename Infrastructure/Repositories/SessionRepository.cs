@@ -2,9 +2,10 @@ using System.Linq;
 
 using Core.Interfaces;
 using Core.Models;
-using Microsoft.EntityFrameworkCore;
 
 using Infrastructure.Data;
+
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories {
     public class SessionRepository : BaseRepository<Session>, ISessionRepository {

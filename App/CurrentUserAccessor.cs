@@ -1,14 +1,14 @@
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 
 using Core.Interfaces;
 
+using Infrastructure;
 using Infrastructure.Data;
 
 using Microsoft.AspNetCore.Http;
-using Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 namespace App {
     public class CurrentUserAccessor : ICurrentUserAccessor {

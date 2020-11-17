@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 using Core.Interfaces;
 
+using DTO.Login;
+
 using Infrastructure.Models;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
-
-using DTO.Login;
 
 // https://devblogs.microsoft.com/aspnet/asp-net-core-authentication-with-identityserver4/
 // has example of the message type needed to get token from identityserver4

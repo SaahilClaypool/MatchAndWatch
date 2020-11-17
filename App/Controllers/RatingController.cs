@@ -5,13 +5,14 @@ using System.Threading.Tasks;
 
 using Core.UseCases.Rating;
 
+using DTO.Rating;
+using DTO.Session;
+
 using MediatR;
 
 using Microsoft.AspNetCore.Http;
-using DTO.Session;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using DTO.Rating;
 
 namespace App.Controllers {
     [Authorize]

@@ -4,4 +4,8 @@ namespace Core.Interfaces {
         string UserName { get; set; }
         string Email { get; set; }
     }
+
+    public interface INotification {
+        string Message { get; }
+    }
 }

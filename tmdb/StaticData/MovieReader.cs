@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-using Infrastructure;
+using Extensions;
 
 namespace tmdb.StaticData {
     public class MovieReader {

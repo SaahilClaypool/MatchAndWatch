@@ -9,11 +9,12 @@ using Core.Services.Session;
 
 using FluentValidation;
 
+using Extensions;
+
 using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Infrastructure;
 
 namespace Core.UseCases.Rating {
     public class NewRating {
@@ -65,8 +66,8 @@ namespace Core.UseCases.Rating {
                     .FirstAsync(cancellationToken);
                 var currentUser = await CurrentUserAccessor.CurrentUser();
                 var manager = new SessionManager(SessionRepository, TitleRepository, session, currentUser.Id, Logger);
-                
-                var title =  await manager.NextTitle();
+
+                var title = await manager.NextTitle();
                 Logger.LogDebug(title.ToJson());
                 return new(
                     title.Name,

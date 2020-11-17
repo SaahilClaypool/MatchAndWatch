@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Core.Models.Title;
 
 using Infrastructure;
-using Infrastructure;
+using Extensions;
 using Infrastructure.Data;
 
 using Microsoft.EntityFrameworkCore;

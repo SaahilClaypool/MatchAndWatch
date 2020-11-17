@@ -5,8 +5,8 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Infrastructure {
-    public static class Extensions {
+namespace Extensions {
+    public static class CommonExtensions {
         /// <summary>
         /// Print any object using the system json
         /// NOTE: this might get caught in infinite loops (look how to fix...)

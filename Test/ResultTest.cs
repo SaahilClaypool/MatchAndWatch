@@ -2,7 +2,7 @@ using System;
 
 using Core;
 
-using Infrastructure;
+using Extensions;
 
 using Xunit;
 

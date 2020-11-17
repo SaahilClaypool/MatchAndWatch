@@ -1,14 +1,15 @@
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 using Blazored.LocalStorage;
+
 using DTO;
+using DTO.Login;
 
 using Microsoft.AspNetCore.Components.Authorization;
-using DTO.Login;
-using System.Text.Json;
-using System.Text;
-using System.Net.Http.Headers;
 
 // https://chrissainty.com/securing-your-blazor-apps-authentication-with-clientside-blazor-using-webapi-aspnet-core-identity/
 namespace Blazor.Helpers {
