@@ -1,7 +1,28 @@
 ﻿@page "/"
+@using Blazor.Components
+@using Blazor.Helpers
+@using Microsoft.AspNetCore.Components.Authorization
+@inject IAuthService AuthService
+@inject NavigationManager NavigationManager
+
 
 <h1>Hello, world!</h1>
 
-Welcome to your new app.
+<AuthorizeView>
+    <Authorized>
+        <UserIndex/>
+    </Authorized>
+    <NotAuthorized>
+        @{
+            NavigationManager.NavigateTo("/login");
+        }
+    </NotAuthorized>
+</AuthorizeView>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+
+@code {
+    [Inject]
+    protected IAuthService AuthServiceInstance { get; set; }
+    [Inject]
+    protected NavigationManager NavigationManger { get; set; }
+}

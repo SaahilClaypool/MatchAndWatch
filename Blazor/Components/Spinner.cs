@@ -8,9 +8,9 @@ namespace Blazor.Components.Spinner {
     /// Use by wrapping code in <Spinner IsLoaded=@variable></Spinner>
     /// </summary>
     public class Spinner : ComponentBase {
-        [Parameter] public RenderFragment ChildContent { get; set; } = null;
-        [Parameter] public RenderFragment Loading { get; set; } = null;
-        [Parameter] public RenderFragment Loaded { get; set; }
+        [Parameter] public RenderFragment? ChildContent { get; set; } = null;
+        [Parameter] public RenderFragment? Loading { get; set; } = null;
+        [Parameter] public RenderFragment? Loaded { get; set; } = null;
         [Parameter] public bool IsLoaded { get; set; }
 
         /// <inheritdoc />

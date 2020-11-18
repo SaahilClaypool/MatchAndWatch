@@ -1,0 +1,31 @@
+@using Blazor.Helpers
+<div class="UserIndex">
+    @if (_sessions is not null)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Genres</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var session in _sessions)
+                {
+                    <tr>
+                        <th scope="row"></th>
+                        <td>
+                            <NavLink href=@session.Link()> @session.Name </NavLink>
+                        </td>
+                        <td>@GenresString(session)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+@code {
+    
+}
