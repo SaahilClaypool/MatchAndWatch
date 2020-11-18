@@ -6,8 +6,10 @@
             <thead>
                 <tr>
                     <th>#</th>
+                    <th>Host</th>
                     <th>Name</th>
                     <th>Genres</th>
+                    <th>Invite Link</th>
                 </tr>
             </thead>
             <tbody>
@@ -15,10 +17,14 @@
                 {
                     <tr>
                         <th scope="row"></th>
+                        <td scope="row">
+                            @session.HostName
+                        </td>
                         <td>
                             <NavLink href=@session.Link()> @session.Name </NavLink>
                         </td>
                         <td>@GenresString(session)</td>
+                        <td>Invite Link</td>
                     </tr>
                 }
             </tbody>

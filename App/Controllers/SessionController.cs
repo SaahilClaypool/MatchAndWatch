@@ -15,6 +15,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using App.Helpers;
 
 namespace App.Controllers {
     [Authorize]
@@ -32,9 +33,17 @@ namespace App.Controllers {
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Core.Models.Session>>> Index() {
-            var result = await Mediator.Send(new GetAllForCurrentUser.Command());
+            var result = await Mediator.Send(new CreatedByCurrentUser.Command());
             Logger.LogDebug("fetch session");
             return Ok(result);
+        }
+
+        [HttpGet("participating")]
+        public async Task<ActionResult<IEnumerable<SessionDTO>>> Participating() {
+            var result = await Mediator.Send(new ParticipatedByCurrentUser.Command());
+            Logger.LogDebug("fetch session where user is participating");
+            var resultDTO = result.Select(session => session.ToDTO());
+            return Ok(resultDTO);
         }
 
         [HttpGet("{id}")]
@@ -43,7 +52,7 @@ namespace App.Controllers {
         ) {
             Logger.LogDebug($"fetch session with id {id}");
             var result = await Mediator.Send(new GetSession.Command(id));
-            return Ok(new SessionDTO() { Id = result.Id, Genres = result.Genres, Name = result.Name });
+            return Ok(result.ToDTO());
         }
 
         [HttpGet("{id}/full")]
@@ -56,7 +65,7 @@ namespace App.Controllers {
                 Id = result.Id,
                 Genres = result.Genres,
                 Name = result.Name,
-                Ratings = result.Ratings.Select(rating => ToDTO(rating))
+                Ratings = result.Ratings.Select(rating => rating.ToDTO())
             });
         }
 
@@ -87,26 +96,5 @@ namespace App.Controllers {
             var result = await Mediator.Send(command);
             return Ok(result);
         }
-
-
-        // TODO: Move to helpers
-
-        private static RatingDTO ToDTO(Core.Models.Rating rating) {
-            return new RatingDTO() {
-                MovieTitle = rating.Title.Name,
-                MovieId = rating.Title.Id,
-                UserId = rating.UserId,
-                UserName = rating.User.UserName,
-                Type = ScoreToDTO(rating.Score)
-            };
-        }
-
-        private static string ScoreToDTO(Core.Models.Rating.ScoreType score) =>
-            score switch {
-                Core.Models.Rating.ScoreType.DOWN => RatingDTO.Downvote,
-                Core.Models.Rating.ScoreType.UP => RatingDTO.Upvote,
-                Core.Models.Rating.ScoreType.UNDECIDED => RatingDTO.Pass,
-                _ => throw new NotImplementedException("Can't map score to dto")
-            };
     }
 }

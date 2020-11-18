@@ -51,6 +51,7 @@ namespace App {
 
             services.AddDbContext<ApplicationDbContext>(options => ApplicationDbContext.UseDefaultOptions(options));
             services.AddScoped<ISessionRepository, SessionRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IGenreRepository, GenreRepository>();
             services.AddScoped<ITitleRepository, TitleRepository>();
             services.AddScoped<ICurrentUserAccessor, CurrentUserAccessor>();

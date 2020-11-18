@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
 using Core.Interfaces;
 using Core.Models;
+using Core.Services.Session;
 
 using FluentValidation;
 
@@ -45,13 +47,17 @@ namespace Core.UseCases.Session {
                     Participants = new List<ParticipantStatus>() {
                         new() {
                             User = user,
-                            CurrentState = ParticipantStatus.State.Invited
+                            CurrentState = ParticipantStatus.State.Completed
                         }
+                    },
+                    Invite = new() { 
+                        Expiration = DateTime.UtcNow.AddDays(1),
+                        Code = InviteService.GenerateToken(null!)
                     }
                 };
                 SessionRepository.Add(session);
                 await SessionRepository.Save();
-                return new(session.Id);
+                return new(session.Id!);
             }
         }
     }

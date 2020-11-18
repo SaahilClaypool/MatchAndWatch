@@ -22,7 +22,8 @@ namespace Blazor.Components {
         protected override async Task OnInitializedAsync() {
             base.OnInitialized();
 
-            _sessions = await Http!.GetFromJsonAsync<IEnumerable<SessionDTO>>("api/session/");
+            // _sessions = await Http!.GetFromJsonAsync<IEnumerable<SessionDTO>>("api/session/");
+            _sessions = await Http!.GetFromJsonAsync<IEnumerable<SessionDTO>>("api/session/participating");
         }
 
         public static string GenresString(SessionDTO session) => string.Join(", ", session.Genres);

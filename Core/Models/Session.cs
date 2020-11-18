@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,6 +11,7 @@ namespace Core.Models {
         public IEnumerable<ParticipantStatus> Participants { get; set; }
         public IEnumerable<Rating> Ratings { get; set; }
         public string Name { get; set; }
+        public InviteLink Invite { get; set; } = null!;
     }
 
     public class ParticipantStatus : Entity {
@@ -35,5 +37,12 @@ namespace Core.Models {
         public string TitleId { get; set; }
         public Title.Title Title { get; set; }
         public ScoreType Score { get; set; }
+    }
+
+    public class InviteLink : Entity {
+        public Session Session { get; set; } = null!;
+        public string SessionId { get; set; } = null!;
+        public string Code { get; set; } = default!;
+        public DateTime? Expiration { get; set; } = null!;
     }
 }

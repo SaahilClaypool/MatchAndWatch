@@ -24,11 +24,33 @@ namespace App.Controllers {
         private readonly SignInManager<ApplicationUser> SignInManager;
         private readonly ILogger Logger;
         private ICurrentUserAccessor CurrentUserAccessor { get; init; }
+        public IUserRepository UserRepository { get; }
+        public UserManager<ApplicationUser> UserManager { get; }
 
-        public LoginController(SignInManager<ApplicationUser> signInManager, ILogger<LoginController> logger, ICurrentUserAccessor currentUserAccessor) {
+        public LoginController(
+            SignInManager<ApplicationUser> signInManager,
+            ILogger<LoginController> logger,
+            ICurrentUserAccessor currentUserAccessor,
+            IUserRepository userRepository,
+            UserManager<ApplicationUser> userManager
+            ) {
             SignInManager = signInManager;
             Logger = logger;
             CurrentUserAccessor = currentUserAccessor;
+            UserRepository = userRepository;
+            UserManager = userManager;
+        }
+
+        [HttpPost("Register")]
+        public async Task<bool> Register(
+            [FromBody] LoginDTO details
+        ) {
+            var user = new ApplicationUser() {
+                UserName = details.Username,
+                Email = details.Username
+            };
+            var result = await UserManager.CreateAsync(user, details.Password);
+            return result.Succeeded;
         }
 
         [HttpPost]
@@ -37,7 +59,7 @@ namespace App.Controllers {
         ) {
             var result = await SignInManager.PasswordSignInAsync(details.Username, details.Password, true, false);
             if (!result.Succeeded) {
-                return new LoginResultDTO(false, "");
+                return new LoginResultDTO(false, result.ToString());
             }
             var user = await CurrentUserAccessor.FindByUsername(details.Username);
             var token = JwtMiddleware.GenerateJwtToken(user, Logger);

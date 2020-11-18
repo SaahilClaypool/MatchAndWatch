@@ -56,6 +56,11 @@ namespace Infrastructure.Data {
                 .HasOne(rating => (ApplicationUser)rating.User)
                 .WithMany();
 
+            modelBuilder.Entity<Session>()
+                .OwnsOne(session => session.Invite)
+                .WithOwner(invite => invite.Session)
+                .HasForeignKey(invite => invite.SessionId);
+
             return modelBuilder;
         }
 

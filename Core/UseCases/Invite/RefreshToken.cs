@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Core.Interfaces;
 using Core.Models;
+using Core.Services.Session;
 
 using FluentValidation;
 
@@ -13,11 +14,11 @@ using MediatR;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace Core.UseCases.Session {
-    public class GetSession {
+namespace Core.UseCases.Invite {
+    public class RefreshToken {
         public record Command(
             string Id
-        ) : IRequest<Models.Session> {
+        ) : IRequest<string> {
             public bool IncludeRatings { get; init; } = false;
         };
 
@@ -29,27 +30,25 @@ namespace Core.UseCases.Session {
             }
         }
 
-        public class Handler : IRequestHandler<Command, Models.Session> {
+        public class Handler : IRequestHandler<Command, string> {
             private ISessionRepository SessionRepository { get; init; }
 
             public Handler(ISessionRepository sessionRepository) {
                 SessionRepository = sessionRepository;
             }
 
-            public async Task<Models.Session> Handle(Command request, CancellationToken cancellationToken) {
-                var items = SessionRepository
-                    .ItemsNoTracking()
-                    .Include(session => session.Creater)
-                    .Where(session => session.Id == request.Id);
-                if (request.IncludeRatings) {
-                    items = items.Include(session => session.Ratings)
-                                .ThenInclude(rating => rating.Title);
-                    items = items.Include(session => session.Ratings)
-                                .ThenInclude(rating => rating.User);
-                }
-                var session = await items.FirstAsync(cancellationToken);
-
-                return session;
+            public async Task<string> Handle(Command request, CancellationToken cancellationToken) {
+                var session = await SessionRepository
+                    .Items()
+                    .Where(session => session.Id == request.Id)
+                    .Include(session => session.Invite)
+                    .FirstAsync(cancellationToken)
+                    ;
+                var invite = session.Invite;
+                invite.Code = invite.GenerateToken();
+                invite.Expiration = DateTime.UtcNow.AddDays(1);
+                await SessionRepository.Save();
+                return invite.Code;
             }
         }
     }

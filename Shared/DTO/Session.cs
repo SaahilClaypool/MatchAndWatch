@@ -11,6 +11,7 @@ namespace DTO.Session {
     public class SessionDTO {
         public IEnumerable<string> Genres { get; set; } = null!;
         public string Name { get; set; } = null!;
+        public string HostName { get; set; } = null!;
         public string Id { get; set; } = null!;
     }
 
