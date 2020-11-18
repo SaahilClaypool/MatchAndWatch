@@ -11,9 +11,9 @@
     </div>
     <div class="ScrollableContent">
         <div class="MoviePoster">
-            @if (PosterPath is not null)
+            @if (MovieInfo?.PosterPartialPath is not null)
             {
-                <img src=@PosterPath alt="Poster" />
+                <img src=@MovieInfo.PosterPartialPath alt="Poster" />
             }
             else
             {
