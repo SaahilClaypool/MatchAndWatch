@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Core.Models;
 using Core.Models.Title;
@@ -7,9 +8,10 @@ using Core.Models.Title;
 using Infrastructure.Models;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Infrastructure.Data {
-    public static class ConfigureTitleExtensions {
+    public static class ConfigureModels {
         public static ModelBuilder ConfigureTitle(this ModelBuilder modelBuilder) {
             modelBuilder.Entity<Title>()
                 .HasKey(title => title.Id);
@@ -36,7 +38,11 @@ namespace Infrastructure.Data {
                 .Property(session => session.Genres)
                 .HasConversion(
                     v => string.Join(',', v),
-                    v => v.Split(',', StringSplitOptions.RemoveEmptyEntries));
+                    v => v.Split(',', StringSplitOptions.RemoveEmptyEntries),
+                    new ValueComparer<IEnumerable<string>>(
+                        (l1, l2) => l2.Count() == l1.Count() && l1.All(item => l2.Contains(item)),
+                        l => string.Join(",", l.OrderBy(s => s).ToArray()).GetHashCode()
+                    ));
 
             modelBuilder.Entity<Session>()
               .OwnsMany(session => session.Participants)
